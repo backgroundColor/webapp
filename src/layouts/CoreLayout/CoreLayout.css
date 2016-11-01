@@ -1,0 +1,35 @@
+/* import your vars... */
+@value vars: "../../styles/variables.css";
+@value side-bar-width, side-bar-inner-width, default-border from vars;
+
+
+.core-layout {
+  height: 100%;
+  position: relative;
+}
+
+.side-nav {
+  width: side-bar-width;
+  height: 100%;
+  float: left;
+  overflow: hidden;
+  border-right: default-border;
+}
+
+.side-nav :global .ant-menu-inline,
+.side-nav :global .ant-menu-vertical {
+  border-right: 0
+}
+
+.side-nav__inner {
+  width: side-bar-inner-width;
+  height: 100%;
+  overflow: auto;
+}
+
+.viewport {
+  padding: 0 20px;
+  height: 100%;
+  /*奇迹：overflow会使viewport的宽度去掉左侧的side-nav的宽度*/
+  overflow: auto;
+}

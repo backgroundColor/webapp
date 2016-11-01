@@ -1,0 +1,14 @@
+task-ui:
+    hostname: task-ui
+    image: dev.k2data.com.cn:5001/k2data/task-ui:dev
+    host: server1
+    environment:
+      HOST_OF_TASKAPI
+    volumes:
+    ports:
+      - "5040:80"
+    logging:
+      options:
+        max-size: 2g
+    links:
+      consolerest

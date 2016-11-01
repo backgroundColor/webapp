@@ -1,0 +1,19 @@
+/* import your vars... */
+@value vars: "../../styles/variables.css";
+@value header-height from vars;
+
+.header-logo {
+  height: header-height;
+  line-height: 50px;
+  font-size: 1.6em;
+  padding-left: 24px;
+}
+
+.header-logo img {
+  height: 32px;
+  width: 32px;
+  margin-bottom: -3px;
+  margin-left: -8px;
+  margin-right: 8px;
+  vertical-align: text-bottom;
+}

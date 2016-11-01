@@ -1,0 +1,5 @@
+:global {
+  .biu-instance {
+    z-index: 10000;
+  }
+}
