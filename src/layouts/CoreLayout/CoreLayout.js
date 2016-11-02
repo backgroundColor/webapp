@@ -16,19 +16,26 @@ import LeftPanel from '../../components/LeftPanel'
 import styles from './CoreLayout.css'
 import '../../styles/core.css'
 
-export const CoreLayout = ({ children }: { children: HTMLElement}) => (
+function hideNavbar (location) {
+  return location.query['hide-navbar'] === 'true'
+}
+
+export const CoreLayout = ({ children, location }: { children: HTMLElement, location: Object }) => (
   <div className={styles['core-layout']}>
     {
       // <Header />
     }
-    <div className={styles['side-nav']}>
-      {
-        // <div className={styles['side-nav__inner']}>
-        //   <SideNav />
-        // </div>
-      }
-      <LeftPanel />
-    </div>
+    {!hideNavbar(location)
+      ? <div className={styles['side-nav']}>
+        {
+          // <div className={styles['side-nav__inner']}>
+          //   <SideNav />
+          // </div>
+        }
+        <LeftPanel />
+      </div>
+      : false
+    }
     <div className={styles['viewport']}>
       {children}
     </div>
