@@ -98,7 +98,7 @@ config.globals = {
   '__COVERAGE__' : !argv.watch && config.env === 'test',
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
   '__TASK_URL__' : config.docker === 'yes'
-    ? JSON.stringify('/task/')
+    ? JSON.stringify('/api/task/')
     : JSON.stringify(config.task_url)
 }
 
