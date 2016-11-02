@@ -35,10 +35,10 @@ export default class TaskTableView extends React.Component {
           return [{headerName: '任务ID', field: 'id', cellStyle: {padding: '8px'}},
             {headerName: '任务名称', field: 'taskName', cellStyle: {padding: '8px'}},
             {headerName: '触发规则', field: 'triggerRule', cellStyle: {padding: '8px'}},
-            {headerName: 'quartzStartTime', field: 'quartzStartTime', cellRenderer: function (params) {
+            {headerName: '定时开始时间', field: 'quartzStartTime', cellRenderer: function (params) {
               return params.value ? moment(params.value).format('YYYY-MM-DD HH:mm:ss') : params.value
             }, cellStyle: {padding: '8px'}},
-            {headerName: 'quartzEndTime', field: 'quartzEndTime', cellRenderer: function (params) {
+            {headerName: '定时结束时间', field: 'quartzEndTime', cellRenderer: function (params) {
               return params.value ? moment(params.value).format('YYYY-MM-DD HH:mm:ss') : params.value
             }, cellStyle: {padding: '8px'}},
             {headerName: '当前运行时间', field: 'latestExecTime', cellRenderer: function (params) {
