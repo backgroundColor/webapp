@@ -32,7 +32,7 @@ export default class AgTable extends React.Component {
       onGridReady: (params) => { this.onGridReady(params) },
       rowSelection: 'single',
       rowModelType: 'pagination',
-      rowStyle: {'font-size': '12px'},
+      rowStyle: { 'font-size': '12px' },
       localeText: {
         page: '',
         more: '...',
@@ -64,7 +64,7 @@ export default class AgTable extends React.Component {
     let observer = new MutationObserver(function (mutations) {
       callback()
     })
-    const config = {attributes: true, childList: true, characterData: true}
+    const config = { attributes: true, childList: true, characterData: true }
     observer.observe(center, config) // 监听ag-grid内部的center，响应时间最短，不用设置setTimtout
   }
 
@@ -89,7 +89,7 @@ export default class AgTable extends React.Component {
 
   render () {
     return (
-      <div style={{height: '90%'}} className='ag-fresh ag-container'>
+      <div style={{ height: '90%' }} className='ag-fresh ag-container'>
         <TopChangeNum total={this.state.totalpage} />
         <AgGridReact
           gridOptions={this.gridOptions}
@@ -104,7 +104,7 @@ export default class AgTable extends React.Component {
         <PageNumChange
           total={this.state.total}
           pagesize={this.state.pagesize}
-          options={[1, 2, 5]}
+          options={[10, 25, 50]}
           onChange={this.pageNumChange} />
       </div>
     )

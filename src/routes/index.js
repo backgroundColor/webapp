@@ -11,7 +11,7 @@ import TasksViewRoute from './Tasks'
 export const createRoutes = (store: Store<*, *>) => ({
   path        : '/',
   component   : CoreLayout,
-  indexRoute  : { onEnter: (nextState: Object, replace: () => void) => replace('/instances') },
+  indexRoute  : { onEnter: (nextState: Object, replace: () => void) => replace('/tasks') },
   childRoutes : [
     InstancesViewRoute(store),
     TasksViewRoute(store)
