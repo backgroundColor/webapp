@@ -36,6 +36,8 @@ export default class DataFactory {
               }
             }
             params.successCallback(rowsThisPage, lastRow)
+          } else {
+            params.failCallback()
           }
         })
         .catch(function (err) {

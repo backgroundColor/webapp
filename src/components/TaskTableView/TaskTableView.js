@@ -45,7 +45,7 @@ export default class TaskTableView extends React.Component {
               return params.value ? moment(params.value).format('YYYY-MM-DD HH:mm:ss') : params.value
             }, cellStyle: {padding: '8px'}},
             {headerName: '时控', field: 'timed', cellStyle: {padding: '8px'}},
-            {headerName: 'taskClass', field: 'taskClass', cellStyle: {padding: '8px'}},
+            {headerName: '源文件', field: 'taskClass', cellStyle: {padding: '8px'}},
             {headerName: '运行结果', field: 'result', cellStyle: {padding: '8px'}},
             {headerName: '运行状态', field: 'status', cellStyle: {padding: '8px'}},
             {headerName: '下次运行时间', field: 'nextExecTime', cellStyle: {padding: '8px'}},

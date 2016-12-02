@@ -34,7 +34,7 @@ const config = {
   // ----------------------------------
   // Api Configuration
   // ----------------------------------
-  task_url    : process.env.TASK_URL || 'http://10.1.10.37:8083/taskManager/',
+  task_url    : process.env.TASK_URL || 'http://192.168.130.115:8081/data-service/v2/',
 
   // ----------------------------------
   // Compiler Configuration

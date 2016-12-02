@@ -3,7 +3,6 @@ import { AgGridReact } from 'ag-grid-react'
 import ColumnDefFactory from './ColumnDefFactory'
 import DataFactory from './DataFactory'
 import PageNumChange from './PageNumChange'
-import TopChangeNum from './TopChangePage'
 
 type Props = {
   path: String,
@@ -14,9 +13,9 @@ export default class AgTable extends React.Component {
   props: Props;
   state = {
     colDefs: new ColumnDefFactory().createColDefs(this.props.cols),
-    total: '1000',
+    total: '0',
     pagesize: 1,
-    totalpage: ''
+    totalpage: '1'
   }
   constructor (props) {
     super(props)
@@ -89,13 +88,15 @@ export default class AgTable extends React.Component {
 
   render () {
     return (
-      <div style={{ height: '90%' }} className='ag-fresh ag-container'>
-        <TopChangeNum total={this.state.totalpage} />
+      <div style={{
+        height: 'calc(100% - 30px)',
+        paddingTop: '30px' }} className='ag-fresh ag-container'>
         <AgGridReact
           gridOptions={this.gridOptions}
           columnDefs={this.state.columnDefs}
           enableColResize='true'
           enableSorting='true'
+          enableFilter='true'
           rowHeight='34'
           headerHeight='28'
           rowBuffer='50'
