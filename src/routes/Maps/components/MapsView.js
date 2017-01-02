@@ -1,9 +1,9 @@
 import React from 'react'
-import TaskTableView from 'components/TaskTableView'
+import LayoutView from 'components/LayoutView'
 const propTypes = {
   params: React.PropTypes.object.isRequired
 }
-export default class InstancesView extends React.Component {
+export default class Maps extends React.Component {
   props: propTypes
   componentDidMount () {
     // console.log(this.props)
@@ -11,7 +11,7 @@ export default class InstancesView extends React.Component {
   render () {
     return (
       <div style={{height: '100%'}}>
-        <TaskTableView path={this.props.route.path} type={'instances'} />
+        <LayoutView type='runtime' title='实时数据' />
       </div>
     )
   }

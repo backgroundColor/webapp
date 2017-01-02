@@ -2,19 +2,24 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
 import type { Store } from 'redux'
-import InstancesViewRoute from './Instances'
+import MapsViewRoute from './Maps'
 import TasksViewRoute from './Tasks'
-
+import UserManagerViewRoute from './UserManager'
+import AddUserRoute from './AddUser'
+import ModifyUserRoute from './ModifyUser'
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = (store: Store<*, *>) => ({
   path        : '/',
   component   : CoreLayout,
-  indexRoute  : { onEnter: (nextState: Object, replace: () => void) => replace('/tasks') },
+  indexRoute  : { onEnter: (nextState: Object, replace: () => void) => replace('/maps') },
   childRoutes : [
-    InstancesViewRoute(store),
-    TasksViewRoute(store)
+    MapsViewRoute(store),
+    TasksViewRoute(store),
+    UserManagerViewRoute(store),
+    AddUserRoute(store),
+    ModifyUserRoute(store)
   ]
 })
 

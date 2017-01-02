@@ -1,0 +1,8 @@
+.page-mess {
+  height: 50px;
+  line-height: 50px;
+  font-size: 2em;
+  color: #404040;
+  border-bottom:1px solid #404040;
+  width: 100%;
+}
