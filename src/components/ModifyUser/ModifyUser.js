@@ -55,7 +55,8 @@ class ModifyUser extends React.Component {
             value: '32',
           },
           address: {
-            value: 'London, Park Lane no. 0',
+            editable: false,
+            value: '一级管理员',
           },
         },
         {
@@ -69,7 +70,8 @@ class ModifyUser extends React.Component {
               value: '32',
             },
             address: {
-              value: 'London, Park Lane no. 0',
+              editable: false,
+              value: '一级管理员',
             },
           }
       ],

@@ -1,0 +1,13 @@
+.datagrid{
+  .ant-card-body {
+    position: relative;
+  }
+  .gridbody {
+    /*position: absolute;
+    left: 0;
+    top: 48px;
+    bottom: 0px;*/
+    min-height: 100px;
+    width: 100px
+  }
+}

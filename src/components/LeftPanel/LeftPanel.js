@@ -62,11 +62,11 @@ export default class LeftPanel extends React.Component {
             </Menu.Item>
           </SubMenu>
           <SubMenu key="sub2" title={<span><Icon type="calendar" /><span>数据中心</span></span>}>
-            <Menu.Item key="5">实时数据</Menu.Item>
-            <Menu.Item key="6">历史数据</Menu.Item>
+            <Menu.Item key="5"><Link to='runtime'>实时数据</Link></Menu.Item>
+            <Menu.Item key="6"><Link to='history'>历史数据</Link></Menu.Item>
           </SubMenu>
           <SubMenu key="sub4" title={<span><Icon type="pushpin-o" /><span>报警记录</span></span>}>
-            <Menu.Item key="9">记录</Menu.Item>
+            <Menu.Item key="9"><Link to='/warning'>记录</Link></Menu.Item>
           </SubMenu>
           <SubMenu key="sub5" title={<span><Icon type="setting" /><span>系统设置</span></span>}>
             <Menu.Item key="13"><Link to='/adduser'>添加用户</Link></Menu.Item>

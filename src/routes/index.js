@@ -7,6 +7,8 @@ import TasksViewRoute from './Tasks'
 import UserManagerViewRoute from './UserManager'
 import AddUserRoute from './AddUser'
 import ModifyUserRoute from './ModifyUser'
+import WarnRoute from './Warn'
+import RunTimeRoute from './RunTime'
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -19,7 +21,9 @@ export const createRoutes = (store: Store<*, *>) => ({
     TasksViewRoute(store),
     UserManagerViewRoute(store),
     AddUserRoute(store),
-    ModifyUserRoute(store)
+    ModifyUserRoute(store),
+    WarnRoute(store),
+    RunTimeRoute(store)
   ]
 })
 
