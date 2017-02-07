@@ -28,19 +28,19 @@ export default class RunTime extends React.Component {
       name: '高区流量',
       value: 12
     }
-  ]
+    ]
     return (
       <div className={styles['runtime-container']}>
         <strong>数据中心</strong>
         <div className={styles['content']}>
           <div className={styles['view']}>
-            <div className={styles['item']}>
+            <div className={styles['item-all']}>
               <DataCard title='高区实时数据' data={allData} />
             </div>
-            <div className={styles['item']}>
+            <div className={styles['item-all']}>
               <DataCard title='中区实时数据' data={allData} />
             </div>
-            <div className={styles['item']}>
+            <div className={styles['item-all']}>
               <DataCard title='低区实时数据' data={allData} />
             </div>
           </div>

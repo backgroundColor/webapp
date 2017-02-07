@@ -34,7 +34,7 @@ const config = {
   // ----------------------------------
   // Api Configuration
   // ----------------------------------
-  task_url    : process.env.TASK_URL || 'http://192.168.130.115:8081/data-service/v2/',
+  task_url    : process.env.TASK_URL || 'http://101.200.159.134:8080/report/',
 
   // ----------------------------------
   // Compiler Configuration

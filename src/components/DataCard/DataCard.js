@@ -23,22 +23,38 @@ export default class DataCard extends React.Component {
     })
   }
   render () {
-    const {show} = this.state
+    const { show } = this.state
     return (
       <div className={styles['datagrid']}>
         <Row>
           <Col>
-            <Card title={this.props.title} bordered={true}
-            extra={<a href="javascript:;" onClick={this.showGrid}><i className='fa fa-area-chart' aria-hidden='true'></i></a>}>
+            <Card title={this.props.title}
+              extra={<a href='javascript:;' onClick={this.showGrid}>
+                <i className='fa fa-area-chart' aria-hidden='true'></i></a>}>
               <div className={styles['gridbody']} style={{display: show === 'message' ? 'block': 'none'}}>
                 {
                   this.props.data && this.props.data.map((item, index) => {
-                    return <p key={`data${index}`}>{item.name}{item.value}</p>
+                    return <p className={styles['item-data']} key={`data${index}`}>{item.name}:&nbsp;&nbsp;{item.value}
+                      {
+                        (() => {
+                          if (item.name.indexOf('温度') > 0) {
+                            return '°C'
+                          }
+                          if (item.name.indexOf('压力') > 0) {
+                            return 'Pa'
+                          }
+                          if (item.name.indexOf('流量') > 0) {
+                            return 'cc'
+                          }
+                        })()
+                      }
+                    </p>
                   })
                 }
               </div>
-              <div className={styles['gridbody']} className={styles['grid']} style={{display: show === 'grid' ? 'block': 'none'}}>
-                <DataGrid />
+              <div className={styles['gridbody']}
+                style={{ display: show === 'grid' ? 'block' : 'none' }}>
+                <DataGrid data={this.props.data} />
               </div>
             </Card>
           </Col>
