@@ -5,13 +5,13 @@ type Props = {
   data: array
 }
 export default class TableView extends React.Component {
-  props: props
+  props: Props
   constructor (props) {
     super(props)
     this.onChange = this.onChange.bind(this)
   }
-  onChange(pagination, filters, sorter) {
-   console.log('params', pagination, filters, sorter);
+  onChange (pagination, filters, sorter) {
+    console.log('params', pagination, filters, sorter)
   }
   render () {
     return (
