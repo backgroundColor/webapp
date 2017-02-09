@@ -84,6 +84,10 @@ export default class LeftPanel extends React.Component {
         // })
       }
     })
+    .catch((err) => {
+      console.info('err!!')
+      console.error(err)
+    })
   }
 
   render () {

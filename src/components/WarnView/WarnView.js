@@ -1,5 +1,6 @@
 import React from 'react'
 import TableView from '../TableView'
+import ProSelect from '../ProSelect'
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -67,6 +68,7 @@ export default class WarnView extends React.Component {
   render () {
     return (
       <div>
+        <ProSelect />
         <TableView columns={columns} data={data} />
       </div>
     )
