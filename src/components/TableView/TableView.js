@@ -16,7 +16,7 @@ export default class TableView extends React.Component {
   render () {
     return (
       <div>
-        <Table columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
+        <Table bordered columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
       </div>
     )
   }

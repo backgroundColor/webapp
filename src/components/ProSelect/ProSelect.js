@@ -1,12 +1,14 @@
 import React from 'react'
 import styles from './ProSelect.css'
-import { Select, Row, Col, Button } from 'antd'
+import { Select, Row, Col, Button, notification } from 'antd'
 const Option = Select.Option
-
+type Props = {
+  getData: Function
+}
 export default class ProSelect extends React.Component {
-
-  constructor () {
-    super()
+  props: Props
+  constructor (props) {
+    super(props)
     this.state = {
       provinces: [],
       cities: [],
@@ -29,6 +31,12 @@ export default class ProSelect extends React.Component {
   componentDidUpdate () {
     // console.info(this.state)
   }
+  showErr (type, message) {
+    notification[type]({
+      message: '错误',
+      description: message
+    })
+  }
   getProvice () {
     fetch(`${__TASK_URL__}projects/provinces`)
     .then((res) => res.status === 200 && res.json())
@@ -38,6 +46,10 @@ export default class ProSelect extends React.Component {
           provinces: json
         })
       }
+    })
+    .catch((err) => {
+      console.error(err)
+      this.showErr('error', '获取省失败！！')
     })
   }
   handleProvince (value) {
@@ -56,6 +68,10 @@ export default class ProSelect extends React.Component {
         })
       }
     })
+    .catch((err) => {
+      console.error(err)
+      this.showErr('error', '获取城市失败！！')
+    })
   }
   handleCities (value) {
     console.info(value)
@@ -73,10 +89,15 @@ export default class ProSelect extends React.Component {
         })
       }
     })
+    .catch((err) => {
+      console.error(err)
+      this.showErr('error')
+    })
   }
   handleProject (value) {
     this.state.projects.forEach((item) => {
-      if (item.value === value) {
+      // console.info(item)
+      if (item.name === value) {
         this.setState({
           projectId: item.id
         })
@@ -89,7 +110,18 @@ export default class ProSelect extends React.Component {
   }
   handleGetData () {
     console.info('get data...')
-    console.info(this.state)
+    // console.info(this.state)
+    fetch(`${__TASK_URL__}reports?page=1&size=10&id=${this.state.projectId}`)
+    .then((res) => res.status === 200 && res.json())
+    .then((json) => {
+      if (json) {
+        this.props.getData(json.body.items)
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      this.showErr('error', '获取项目数据失败！！')
+    })
   }
   render () {
     const { provinces = [], cities = [],

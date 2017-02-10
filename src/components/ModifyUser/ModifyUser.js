@@ -2,82 +2,99 @@ import React from 'react'
 import { Table, Input, Popconfirm } from 'antd'
 import EditableCell from './EditableCell'
 
-
 class ModifyUser extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.columns = [{
       title: '用户名',
       dataIndex: 'name',
       width: '25%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'name', text),
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'name', text)
     }, {
       title: '密码',
-      dataIndex: 'age',
+      dataIndex: 'password',
       width: '15%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'age', text),
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'password', text)
     }, {
       title: '用户级别',
-      dataIndex: 'address',
-      width: '40%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'address', text),
+      dataIndex: 'level',
+      width: '20%',
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'level', text)
+    }, {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      width: '20%'
     }, {
       title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
         const { editable } = this.state.data[index].name
-        return (<div className="editable-row-operations">
+        return (<div className='editable-row-operations'>
           {
-            editable ?
-            <span>
-              <a onClick={() => this.editDone(index, 'save')}>保存</a>&nbsp;&nbsp;
-              <Popconfirm title="Sure to cancel?" onConfirm={() => this.editDone(index, 'cancel')}>
-                <a>取消</a>
-              </Popconfirm>
-            </span>
-            :
-            <span>
-              <a onClick={() => this.edit(index)}>修改</a>
-            </span>
+            editable
+              ? <span>
+                <a onClick={() => this.editDone(index, 'save')}>保存</a>&nbsp;&nbsp;
+                <Popconfirm title='Sure to cancel?' onConfirm={() => this.editDone(index, 'cancel')}>
+                  <a>取消</a>
+                </Popconfirm>
+              </span>
+              : <span>
+                <a onClick={() => this.edit(index)}>修改</a>
+              </span>
           }
         </div>)
-      },
+      }
     }]
     this.state = {
-      data: [{
-          key: '0',
-          name: {
-            editable: false,
-            value: 'Edward King 0',
-          },
-          age: {
-            editable: false,
-            value: '32',
-          },
-          address: {
-            editable: false,
-            value: '一级管理员',
-          },
-        },
-        {
-            key: '1',
-            name: {
-              editable: false,
-              value: 'Edward King 0',
-            },
-            age: {
-              editable: false,
-              value: '32',
-            },
-            address: {
-              editable: false,
-              value: '一级管理员',
-            },
-          }
-      ],
+      data: []
     }
+    this.getUsers = this.getUsers.bind(this)
   }
-  renderColumns(data, index, key, text) {
+
+  componentDidMount () {
+    this.getUsers()
+  }
+
+  getUsers () {
+    fetch(`${__TASK_URL__}allusers`, {
+      method: 'POST',
+      header: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ page: 1, size: 10 })
+    })
+    .then((res) => res.status === 200 && res.json())
+    .then((json) => {
+      if (json.code === 0) {
+        this.setState({
+          data: json.body.items.map((item, index) => {
+            return {
+              key: index + 1,
+              name: {
+                editable: false,
+                value: item.name
+              },
+              level: {
+                editable: false,
+                value: item.level
+              },
+              password: {
+                editable: false,
+                value: item.pass
+              },
+              createTime: {
+                editable: false,
+                value: item.createTime
+              }
+            }
+          })
+        })
+      }
+    })
+  }
+
+  renderColumns (data, index, key, text) {
     const { editable, status } = data[index][key]
     if (typeof editable === 'undefined') {
       return text
@@ -89,12 +106,12 @@ class ModifyUser extends React.Component {
       status={status}
     />)
   }
-  handleChange(key, index, value) {
+  handleChange (key, index, value) {
     const { data } = this.state
     data[index][key].value = value
     this.setState({ data })
   }
-  edit(index) {
+  edit (index) {
     const { data } = this.state
     Object.keys(data[index]).forEach((item) => {
       if (data[index][item] && typeof data[index][item].editable !== 'undefined') {
@@ -103,7 +120,7 @@ class ModifyUser extends React.Component {
     })
     this.setState({ data })
   }
-  editDone(index, type) {
+  editDone (index, type) {
     const { data } = this.state
     Object.keys(data[index]).forEach((item) => {
       if (data[index][item] && typeof data[index][item].editable !== 'undefined') {
@@ -119,7 +136,7 @@ class ModifyUser extends React.Component {
       })
     })
   }
-  render() {
+  render () {
     const { data } = this.state
     const dataSource = data.map((item) => {
       const obj = {}
