@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './ViewContent.css'
 import { route } from 'react-router'
 import { connect } from 'react-redux'
-
+import MapBox from '../MapBox'
 class ViewContent extends React.Component {
 
   componentDidMount () {
@@ -14,18 +14,7 @@ class ViewContent extends React.Component {
   render () {
     return (
       <div className={styles['view-content']}>
-        {
-          // (() => {
-          //   switch (this.props.params.id) {
-          //     case 'adduser':
-          //       return <div>adduser</div>
-          //     case 'modifyuser':
-          //       return <div>modifyuser</div>
-          //     default:
-          //       return
-          //   }
-          // })()
-        }
+        <MapBox />
       </div>
     )
   }

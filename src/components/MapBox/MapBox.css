@@ -1,0 +1,63 @@
+.map-box {
+  height: 100%;
+  .message {
+    height: 60%;
+    padding: 10px;
+    .map {
+      width: 600px;
+      /*background-color: #f00;*/
+      height: 100%;
+      float: left;
+      border-right: 1px solid #e3e3e3;
+    }
+    .project-mess {
+      height: 100%;
+      margin-left: 601px;
+      padding: 5px;
+      h4 {
+        background-color: #e3e3e3;
+        line-height: 30px;
+        text-indent: 1em;
+      }
+      .img-box {
+        width: 100%;
+        height: 200px;
+        .img {
+          height: 200px;
+          /*background-color: #f00*/
+        }
+      }
+      .project {
+        li {
+          display: block;
+          padding: 5px 10px;
+          span {
+            display: inline-block;
+            width: 80px;
+          }
+          div {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+  .line {
+    height: 40%;
+    padding: 10px 0px;
+    text-indent: 1em;
+    h3 {
+      padding: 5px;
+      background-color: #e3e3e3;
+    }
+    .item {
+      float: left;
+      width: 50%;
+      padding: 10px;
+      height: 100%;
+    }
+  }
+}
