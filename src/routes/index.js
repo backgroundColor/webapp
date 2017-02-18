@@ -9,6 +9,7 @@ import AddUserRoute from './AddUser'
 import ModifyUserRoute from './ModifyUser'
 import WarnRoute from './Warn'
 import RunTimeRoute from './RunTime'
+import HistroyRoute from './Histroy'
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -23,7 +24,8 @@ export const createRoutes = (store: Store<*, *>) => ({
     AddUserRoute(store),
     ModifyUserRoute(store),
     WarnRoute(store),
-    RunTimeRoute(store)
+    RunTimeRoute(store),
+    HistroyRoute(store)
   ]
 })
 

@@ -2,7 +2,8 @@ import React from 'react'
 import { Table } from 'antd'
 type Props = {
   columns: array,
-  data: array
+  data: array,
+  pagination: boolean
 }
 export default class TableView extends React.Component {
   props: Props
@@ -16,7 +17,8 @@ export default class TableView extends React.Component {
   render () {
     return (
       <div>
-        <Table bordered columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
+        <Table bordered pagination={this.props.pagination}
+          columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
       </div>
     )
   }

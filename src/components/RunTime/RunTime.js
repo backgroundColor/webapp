@@ -92,7 +92,7 @@ export default class RunTime extends React.Component {
             {
               transBox.map((item, index) => {
                 return <div key={`trans${index}`} className={styles['item']}>
-                  <DataCard title='变压器1' data={[
+                  <DataCard title={`${item.name}${index}`} data={[
                     { name: 'A相温度', value: item.a_tem },
                     { name: 'B相温度', value: item.b_tem },
                     { name: 'C相温度', value: item.c_tem },
@@ -120,7 +120,7 @@ export default class RunTime extends React.Component {
                         { name: '污水侧进水温度', value: item.dirtyWaterInTemp },
                         { name: '清水侧进水温度', value: item.cleanWaterInTemp },
                         { name: '污水侧出水温度', value: item.dirtyWaterOutTemp },
-                        { name: '清水侧出水温度', value: item.cleanWaterInTemp },
+                        { name: '清水侧出水温度', value: item.cleanWaterOutTemp },
                         { name: '水箱温度', value: item.waterBoxTemp },
                         { name: '排气温度', value: item.gasOutTemp },
                         { name: '吸气温度', value: item.gasInTemp },
