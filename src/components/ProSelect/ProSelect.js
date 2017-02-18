@@ -3,7 +3,8 @@ import styles from './ProSelect.css'
 import { Select, Row, Col, Button, notification } from 'antd'
 const Option = Select.Option
 type Props = {
-  getData: Function
+  getData: Function,
+  getProId: Function
 }
 export default class ProSelect extends React.Component {
   props: Props
@@ -109,13 +110,13 @@ export default class ProSelect extends React.Component {
     })
   }
   handleGetData () {
-    console.info('get data...')
-    // console.info(this.state)
+    this.props.getProId && this.props.getProId(this.state.projectId)
+    if (!this.props.getData) return
     fetch(`${__TASK_URL__}reports?page=1&size=10&id=${this.state.projectId}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
-        this.props.getData(json.body.items)
+        this.props.getData && this.props.getData(json.body.items)
       }
     })
     .catch((err) => {

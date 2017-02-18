@@ -2,18 +2,24 @@
   height: 100%;
   .message {
     height: 60%;
-    padding: 10px;
+    /*padding: 10px;*/
     .map {
-      width: 600px;
+      width: 700px;
       /*background-color: #f00;*/
       height: 100%;
       float: left;
       border-right: 1px solid #e3e3e3;
     }
     .project-mess {
-      height: 100%;
-      margin-left: 601px;
-      padding: 5px;
+      /*height: 100%;*/
+      margin-left: 701px;
+      min-width: 200px;
+      /*position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 80%;
+      right: 0px;
+      padding: 5px;*/
       h4 {
         background-color: #e3e3e3;
         line-height: 30px;
@@ -31,15 +37,22 @@
         li {
           display: block;
           padding: 5px 10px;
-          span {
+          box-shadow: 0px 0px 2px #e3e3e3;
+          .name {
             display: inline-block;
             width: 80px;
+            font-weight: bold;
           }
-          div {
+          span {
             display: inline-block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+          .description {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 150px;
           }
         }
       }

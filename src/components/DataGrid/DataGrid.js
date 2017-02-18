@@ -62,22 +62,22 @@ export default class PlotBar extends React.Component {
       window.addEventListener('resize', (data) => {
         Plotly.Plots.resize(result)
       })
-      this.onContainerResize(() => {
-        Plotly.Plots.resize(result)
-      })
+      // this.onContainerResize(() => {
+      //   Plotly.Plots.resize(result)
+      // })
     })
   }
 
-  onContainerResize (callback) {
-    const center = document.querySelector('#content-layout')
-    const MutationObserver = window.MutationObserver || window.WebkitMutationObserver ||
-      window.MozMutationObserver
-    let observer = new MutationObserver(function (mutations) {
-      callback()
-    })
-    const config = { attributes: true }
-    observer.observe(center, config)
-  }
+  // onContainerResize (callback) {
+  //   const center = document.querySelector('#content-layout')
+  //   const MutationObserver = window.MutationObserver || window.WebkitMutationObserver ||
+  //     window.MozMutationObserver
+  //   let observer = new MutationObserver(function (mutations) {
+  //     callback()
+  //   })
+  //   const config = { attributes: true }
+  //   observer.observe(center, config)
+  // }
 
   render () {
     return (
