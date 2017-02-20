@@ -1,11 +1,16 @@
 import React from 'react'
-import { Table, Input, Popconfirm } from 'antd'
+import { Table, Input, Popconfirm, notification } from 'antd'
 import EditableCell from './EditableCell'
 
 class ModifyUser extends React.Component {
   constructor (props) {
     super(props)
     this.columns = [{
+      title: 'ID',
+      dataIndex: 'id',
+      width: '40px',
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'id', text)
+    }, {
       title: '用户名',
       dataIndex: 'name',
       width: '25%',
@@ -34,12 +39,15 @@ class ModifyUser extends React.Component {
             editable
               ? <span>
                 <a onClick={() => this.editDone(index, 'save')}>保存</a>&nbsp;&nbsp;
-                <Popconfirm title='Sure to cancel?' onConfirm={() => this.editDone(index, 'cancel')}>
+                <Popconfirm title='确定取消?' onConfirm={() => this.editDone(index, 'cancel')}>
                   <a>取消</a>
                 </Popconfirm>
               </span>
               : <span>
-                <a onClick={() => this.edit(index)}>修改</a>
+                <a onClick={() => this.edit(index)}>修改</a>&nbsp;&nbsp;
+                <Popconfirm title='确定删除?' onConfirm={() => this.delUser(index)}>
+                  <a>删除</a>
+                </Popconfirm>
               </span>
           }
         </div>)
@@ -49,6 +57,42 @@ class ModifyUser extends React.Component {
       data: []
     }
     this.getUsers = this.getUsers.bind(this)
+    this.delUser = this.delUser.bind(this)
+  }
+
+  delUser (index) {
+    const { data } = this.state
+    console.log(data[index])
+    fetch(`${__TASK_URL__}user/delete`, {
+      method: 'POST',
+      header: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: data[index]['id'].value })
+    })
+    .then((res) => res.status === 200 && res.json())
+    .then((json) => {
+      if (json === 'yes') {
+        notification['success']({
+          message: '成功',
+          description: '删除成功'
+        })
+        this.getUsers()
+      } else {
+        notification['error']({
+          message: '错误',
+          description: '删除失败'
+        })
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      notification['error']({
+        message: '错误',
+        description: '删除失败'
+      })
+    })
   }
 
   componentDidMount () {
@@ -67,10 +111,15 @@ class ModifyUser extends React.Component {
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json.code === 0) {
+        console.info(json)
         this.setState({
           data: json.body.items.map((item, index) => {
             return {
               key: index + 1,
+              id: {
+                editable: false,
+                value: item.id
+              },
               name: {
                 editable: false,
                 value: item.name
@@ -91,6 +140,13 @@ class ModifyUser extends React.Component {
           })
         })
       }
+    })
+    .catch((err) => {
+      console.error(err)
+      notification['error']({
+        message: '错误',
+        description: '访问失败'
+      })
     })
   }
 

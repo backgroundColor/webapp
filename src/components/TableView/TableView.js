@@ -14,6 +14,9 @@ export default class TableView extends React.Component {
     super(props)
     this.onChange = this.onChange.bind(this)
   }
+  componentDidUpdate () {
+    console.info(this.props.pagination)
+  }
   onChange (pagination, filters, sorter) {
     // console.info(pagination)
     // console.log('params', pagination, filters, sorter)
@@ -26,7 +29,7 @@ export default class TableView extends React.Component {
     }
     return (
       <div>
-        <Table bordered pagination={!this.props.pagination && pageOptions}
+        <Table bordered pagination={this.props.pagination !== false && pageOptions}
           columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
       </div>
     )

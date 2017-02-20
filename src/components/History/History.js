@@ -20,16 +20,17 @@ export default class History extends React.Component {
     // console.info(this.state.data)
   }
   pageChange (val) {
-    console.log(this.state.val)
+    // console.log(this.state.val)
     this.getData(this.state.val, val)
   }
   getProId (val) {
-    // console.info(data)
+    console.info(val)
     this.setState({ val })
     this.getData(val, 1)
   }
   getData (val, page) {
-    fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10`)
+    // FIX ME 后台需要加时间过滤
+    fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10&start=${val.start}&end=${val.end}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       // console.info(json)
