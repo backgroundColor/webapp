@@ -4,15 +4,18 @@ import PageMess from '../PageMess'
 import ViewContent from '../ViewContent'
 type Props = {
   type: String,
-  title: String
+  title: String,
+  location: React.PropTypes.object.isRequired
 }
 export default class LayoutView extends React.Component {
-  // props: props
+  props: Props
   //
   // constructor (props) {
   //   super(props)
   // }
-
+  componentDidMount () {
+    // console.log(this.props)
+  }
   render () {
     return (
       <div className={styles['layout-view']}>

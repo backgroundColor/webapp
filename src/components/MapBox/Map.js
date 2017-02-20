@@ -1,9 +1,14 @@
 import React from 'react'
 import R from 'ramda'
+import { push } from 'react-router-redux'
+import { connect } from 'react-redux'
 type Props = {
-  onClick: Function
+  onClick: Function,
+  push: Function,
+  city: String
 }
-export default class Map extends React.Component {
+const map = new BMap.Map('allmap')    // 创建Map实例
+class Map extends React.Component {
   props: Props
   constructor () {
     super()
@@ -12,16 +17,26 @@ export default class Map extends React.Component {
     }
     this.getAllCities = this.getAllCities.bind(this)
     this.showLocationInfo = this.showLocationInfo.bind(this)
+    this.zoomCityMap = this.zoomCityMap.bind(this)
+  }
+  componentDidUpdate () {
+    console.info(this.props)
   }
   componentDidMount () {
     this.getAllCities()
     // this.createMap()
   }
+  componentWillReceiveProps (nextProps) {
+    if (!R.equals(nextProps.city, this.props.city)) {
+      console.log(this.props)
+      this.zoomCityMap(nextProps.city)
+    }
+  }
   getAllCities () {
     fetch(`${__TASK_URL__}projects/cities`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
-      console.log(R.dropRepeats(json))
+      // console.log(R.dropRepeats(json))
       if (json) {
         this.createMap(R.dropRepeats(json))
       }
@@ -29,11 +44,11 @@ export default class Map extends React.Component {
   }
   createMap (json) {
     const map = new BMap.Map('allmap')    // 创建Map实例
+    this.setState({ map })
     map.centerAndZoom(new BMap.Point(116.404, 39.915), 5)  // 初始化地图,设置中心点坐标和地图级别
     map.addControl(new BMap.MapTypeControl())   //添加地图类型控件
     map.setCurrentCity('北京')          // 设置地图显示的城市 此项是必须设置的
     map.enableScrollWheelZoom(true)
-
     const that = this
     const bounds = map.getBounds()
     const sw = bounds.getSouthWest()
@@ -43,11 +58,16 @@ export default class Map extends React.Component {
     const addMarker = (point) => {
       const marker = new BMap.Marker(point)
       map.addOverlay(marker)
-      // marker.setAnimation(BMAP_ANIMATION_BOUNCE)
     }
     const myGeo = new BMap.Geocoder()
+    this.props.city && myGeo.getPoint(this.props.city, function (point) {
+      if (point) {
+        map.centerAndZoom(point, 15)
+      }
+    })
     for (let i = 0, len = json.length; i < len; i++) {
       myGeo.getPoint(json[i], function (point) {
+        // console.info(point)
         if (point) {
           const lng = point.lng
           const lat = point.lat
@@ -57,17 +77,29 @@ export default class Map extends React.Component {
           addMarker(points)
           marker.addEventListener('click', function (e) {
             map.centerAndZoom(point, 15)
-            // console.log('click')
-            // const p = marker.getPosition()  // 获取marker的位置\
-            // const currentPoint = new BMap.Point(p.lng, p.lat)
+            that.props.push('/maps?city=1')
             gc.getLocation(e.point, function (rs) {
               that.showLocationInfo(json[i])
             })
           })
           map.addOverlay(marker)
         }
-      }, json[i].name)
+      })
     }
+  }
+
+  zoomCityMap (city) {
+    const { map } = this.state
+    if (!city) {
+      map.centerAndZoom(new BMap.Point(116.404, 39.915), 5)  // 初始化地图,设置中心点坐标和地图级别
+      return
+    }
+    const myGeo = new BMap.Geocoder()
+    myGeo.getPoint(city, function (point) {
+      if (point) {
+        map.centerAndZoom(point, 15)
+      }
+    })
   }
   showLocationInfo (value) {
     this.props.onClick(value)
@@ -78,3 +110,5 @@ export default class Map extends React.Component {
     )
   }
 }
+
+export default connect('', { push })(Map)

@@ -3,8 +3,14 @@ import styles from './MapBox.css'
 import { Carousel } from 'antd'
 import Plot from '../Plot'
 import Map from './Map'
+import R from 'ramda'
+type Props = {
+  type: String,
+  title: String,
+  location: Object
+}
 export default class MapBox extends React.Component {
-
+  props: Props
   constructor () {
     super()
     this.state = {
@@ -12,12 +18,22 @@ export default class MapBox extends React.Component {
     }
     this.mapClick = this.mapClick.bind(this)
   }
+
+  componentDidMount () {
+    // console.info(this.props)
+    this.mapClick(this.props.location.query['city'])
+  }
+  componentWillReceiveProps (nextProps) {
+    if (!R.equals(nextProps, this.props)) {
+      this.mapClick(nextProps.location.query['city'])
+    }
+  }
   mapClick (value) {
-    console.info(value)
+    // console.info(value)
     fetch(`${__TASK_URL__}projects/city?city=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
-      console.log(json)
+      // console.log(json)
       this.setState({
         data: json.body[0]
       })
@@ -25,17 +41,20 @@ export default class MapBox extends React.Component {
   }
   render () {
     const { data = [] } = this.state
-    const imgTemples = data.urls && data.urls.map((item, index) => {
+    const imgTemples = data.urls && data.urls.length !== 0
+    ? data.urls.map((item, index) => {
       return <div key={`img${index}`} className={styles['img']}>
         <img height='200' style={{ width: '100%' }} src={item} />
       </div>
     })
+    : <div>暂无图片</div>
     // console.info(imgTemples)
     return (
       <div className={styles['map-box']}>
         <div className={styles['message']}>
           <div className={styles['map']}>
-            <Map onClick={this.mapClick} />
+            <Map onClick={this.mapClick}
+              city={this.props.location.query['city']} />
           </div>
           <div className={styles['project-mess']}>
             <h4>{data.name || '项目'}</h4>

@@ -105,14 +105,14 @@ export default class LeftPanel extends React.Component {
         >
           <SubMenu key='sub1' title={<span><Icon type='camera' /><span>实时监控</span></span>}>
             <Menu.Item key='1'>
-              <Link to='/maps'>map</Link>
+              <Link to='/maps'>全部</Link>
             </Menu.Item>
             {
               provinces.map((item, index) => {
                 return <SubMenu key={`menu${index}`} title={item.name}>
                   {
                     item.list && item.list.map((list, i) => {
-                      return <Menu.Item key={`list${i}`}>{list}</Menu.Item>
+                      return <Menu.Item key={`list${i}`}><Link to={`/maps?city=${list}`}>{list}</Link></Menu.Item>
                     })
                   }
                 </SubMenu>
