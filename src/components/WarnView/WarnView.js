@@ -1,6 +1,7 @@
 import React from 'react'
 import TableView from '../TableView'
 import ProSelect from '../ProSelect'
+import { notification } from 'antd'
 const columns = [{
   title: '标题',
   dataIndex: 'title'
@@ -47,25 +48,46 @@ export default class WarnView extends React.Component {
   constructor () {
     super()
     this.state = {
-      data: []
+      data: [],
+      projectId: 0,
+      total: 1
     }
     this.getData = this.getData.bind(this)
+    this.getProId = this.getProId.bind(this)
   }
-  getData (value) {
+  getProId (value) {
     console.info(value)
-    const data = value && value.map((item, index) => {
-      return { key: index + 1, title: item.title, content: item.content, createTime: item.createTime }
+    this.setState({ projectId: value })
+    this.getData(value, 1)
+  }
+  getData (id, page) {
+    fetch(`${__TASK_URL__}reports?page=${page}&size=10&id=${id}`)
+    .then((res) => res.status === 200 && res.json())
+    .then((json) => {
+      if (json && json.code === 0) {
+        const data = json.body.items.map((item, index) => {
+          return { key: index + 1, title: item.title, content: item.content, createTime: item.createTime }
+        })
+        this.setState({ data, total: json.body.info.total })
+      }
     })
-    this.setState({
-      data
+    .catch((err) => {
+      console.error(err)
+      notification['error']({
+        message: '错误',
+        description: '获取项目数据失败！！'
+      })
     })
   }
   render () {
-    const { data = [] } = this.state
+    const { data = [], total, projectId } = this.state
     return (
       <div>
-        <ProSelect getData={this.getData} str='' />
-        <TableView columns={columns} data={data} />
+        <ProSelect getProId={this.getProId} str='' />
+        <TableView columns={columns} data={data}
+          total={total}
+          onChange={this.getData}
+          d={projectId} />
       </div>
     )
   }

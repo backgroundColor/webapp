@@ -139,7 +139,7 @@ export default class ProSelect extends React.Component {
             <span>省:&nbsp;&nbsp;</span>
             <Select disabled={provinces.length === 0}
               onChange={this.handleProvince}
-              value={province} style={{ width: 200 }}>
+              value={province} style={{ width: 150 }}>
               {provinceOptions}
             </Select>
           </Col>
@@ -149,7 +149,7 @@ export default class ProSelect extends React.Component {
               <Select disabled={cities.length === 0}
                 onChange={this.handleCities}
                 value={city}
-                style={{ width: 200 }}>
+                style={{ width: 150 }}>
                 {cityOptions}
               </Select>
             </span>
@@ -161,7 +161,7 @@ export default class ProSelect extends React.Component {
               <Select disabled={projects.length === 0}
                 onChange={this.handleProject}
                 value={project}
-                style={{ width: 200 }}>
+                style={{ width: 150 }}>
                 {projectOptions}
               </Select>
             </span>
