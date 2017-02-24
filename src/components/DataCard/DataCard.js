@@ -1,8 +1,8 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd'
 import styles from './DataCard.css'
-import DataGrid from '../DataGrid'
-
+// import DataGrid from '../DataGrid'
+import Graph from '../Graph'
 type Props = {
   title: string,
   data: array
@@ -67,7 +67,10 @@ export default class DataCard extends React.Component {
               </div>
               <div className={styles['gridbody']}
                 style={{ display: show === 'grid' ? 'block' : 'none' }}>
-                <DataGrid data={this.props.data} />
+                <Graph data={this.props.data} type='bar' />
+                {
+                  // <DataGrid data={this.props.data} />
+                }
               </div>
             </Card>
           </Col>

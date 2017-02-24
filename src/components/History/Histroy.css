@@ -31,6 +31,10 @@
           line-height: 30px;
           padding: 0px 10px
         }
+        .graph {
+          /*padding: 10px;*/
+          height: 150px;
+        }
       }
     }
   }

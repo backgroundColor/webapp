@@ -3,6 +3,7 @@ import styles from './Histroy.css'
 import ProSelectTime from '../ProSelectTime'
 import TableView from '../TableView'
 import { notification, Pagination } from 'antd'
+import LineGraph from '../LineGraph'
 export default class History extends React.Component {
 
   constructor () {
@@ -29,8 +30,9 @@ export default class History extends React.Component {
     this.getData(val, 1)
   }
   getData (val, page) {
-    // FIX ME 后台需要加时间过滤
-    fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10&start=${val.start}&end=${val.end}`)
+    // FIX ME 后台需要加时间过滤, 加时间过滤后开启以下代码
+    // fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10&start=${val.start}&end=${val.end}`)
+    fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       // console.info(json)
@@ -57,69 +59,69 @@ export default class History extends React.Component {
   }
   render () {
     const columns = {
-      high: [{ title: '供水温度', dataIndex: 'supply_water_temp', render: (text) => <span>{text}°C</span> },
-        { title: '回水温度', dataIndex: 'back_water_temp', render: (text) => <span>{text}°C</span> },
-        { title: '室内温度', dataIndex: 'house_temp', render: (text) => <span>{text}°C</span> },
-        { title: '供水压力', dataIndex: 'supply_water_press', render: (text) => <span>{text}Pa</span> },
-        { title: '回水压力', dataIndex: 'back_water_press', render: (text) => <span>{text}Pa</span> },
-        { title: '高区流量', dataIndex: 'water_flow', render: (text) => <span>{text}cc</span> }
+      high: [{ title: '供水温度', dataIndex: 'supply_water_temp', key: 1, render: (text) => <span>{text}°C</span> },
+        { title: '回水温度', dataIndex: 'back_water_temp', key: 2, render: (text) => <span>{text}°C</span> },
+        { title: '室内温度', dataIndex: 'house_temp', key: 3, render: (text) => <span>{text}°C</span> },
+        { title: '供水压力', dataIndex: 'supply_water_press', key: 4, render: (text) => <span>{text}Pa</span> },
+        { title: '回水压力', dataIndex: 'back_water_press', key: 5, render: (text) => <span>{text}Pa</span> },
+        { title: '高区流量', dataIndex: 'water_flow', key: 6, render: (text) => <span>{text}cc</span> }
       ],
-      media: [{ title: '供水温度', dataIndex: 'supply_water_temp', render: (text) => <span>{text}°C</span> },
-        { title: '回水温度', dataIndex: 'back_water_temp', render: (text) => <span>{text}°C</span> },
-        { title: '室内温度', dataIndex: 'house_temp', render: (text) => <span>{text}°C</span> },
-        { title: '供水压力', dataIndex: 'supply_water_press', render: (text) => <span>{text}Pa</span> },
-        { title: '回水压力', dataIndex: 'back_water_press', render: (text) => <span>{text}Pa</span> },
-        { title: '中区区流量', dataIndex: 'water_flow', render: (text) => <span>{text}cc</span> }
+      media: [{ title: '供水温度', dataIndex: 'supply_water_temp', key: 1, render: (text) => <span>{text}°C</span> },
+        { title: '回水温度', dataIndex: 'back_water_temp', key: 2, render: (text) => <span>{text}°C</span> },
+        { title: '室内温度', dataIndex: 'house_temp', key: 3, render: (text) => <span>{text}°C</span> },
+        { title: '供水压力', dataIndex: 'supply_water_press', key: 4, render: (text) => <span>{text}Pa</span> },
+        { title: '回水压力', dataIndex: 'back_water_press', key: 5, render: (text) => <span>{text}Pa</span> },
+        { title: '中区区流量', dataIndex: 'water_flow', key: 6, render: (text) => <span>{text}cc</span> }
       ],
-      low: [{ title: '供水温度', dataIndex: 'supply_water_temp', render: (text) => <span>{text}°C</span> },
-        { title: '回水温度', dataIndex: 'back_water_temp', render: (text) => <span>{text}°C</span> },
-        { title: '室内温度', dataIndex: 'house_temp', render: (text) => <span>{text}°C</span> },
-        { title: '供水压力', dataIndex: 'supply_water_press', render: (text) => <span>{text}Pa</span> },
-        { title: '回水压力', dataIndex: 'back_water_press', render: (text) => <span>{text}Pa</span> },
-        { title: '低区流量', dataIndex: 'water_flow', render: (text) => <span>{text}cc</span> }
+      low: [{ title: '供水温度', dataIndex: 'supply_water_temp', key: 1, render: (text) => <span>{text}°C</span> },
+        { title: '回水温度', dataIndex: 'back_water_temp', key: 2, render: (text) => <span>{text}°C</span> },
+        { title: '室内温度', dataIndex: 'house_temp', key: 3, render: (text) => <span>{text}°C</span> },
+        { title: '供水压力', dataIndex: 'supply_water_press', key: 4, render: (text) => <span>{text}Pa</span> },
+        { title: '回水压力', dataIndex: 'back_water_press', key: 5, render: (text) => <span>{text}Pa</span> },
+        { title: '低区流量', dataIndex: 'water_flow', key: 6, render: (text) => <span>{text}cc</span> }
       ],
-      transBox: [{ title: 'A相温度', dataIndex: 'a_tem', render: (text) => <span>{text}°C</span> },
-        { title: 'B相温度', dataIndex: 'b_tem', render: (text) => <span>{text}°C</span> },
-        { title: 'C相温度', dataIndex: 'c_tem', render: (text) => <span>{text}°C</span> },
-        { title: 'A相电流', dataIndex: 'a_ele', render: (text) => <span>{text}A</span> },
-        { title: 'B相电流', dataIndex: 'b_ele', render: (text) => <span>{text}A</span> },
-        { title: 'C相电流', dataIndex: 'c_ele', render: (text) => <span>{text}A</span> },
-        { title: 'A相电压', dataIndex: 'a_pre', render: (text) => <span>{text}V</span> },
-        { title: 'B相电压', dataIndex: 'b_pre', render: (text) => <span>{text}V</span> },
-        { title: 'C相电压', dataIndex: 'c_pre', render: (text) => <span>{text}V</span> },
-        { title: '有功功率', dataIndex: 'has_power', render: (text) => <span>{text}W</span> },
-        { title: '无功功率', dataIndex: 'no_power', render: (text) => <span>{text}W</span> },
-        { title: '频率', dataIndex: 'rate', render: (text) => <span>{text}Hz</span> }
+      transBox: [{ title: 'A相温度', dataIndex: 'a_tem', key: 1, render: (text) => <span>{text}°C</span> },
+        { title: 'B相温度', dataIndex: 'b_tem', key: 2, render: (text) => <span>{text}°C</span> },
+        { title: 'C相温度', dataIndex: 'c_tem', key: 3, render: (text) => <span>{text}°C</span> },
+        { title: 'A相电流', dataIndex: 'a_ele', key: 4, render: (text) => <span>{text}A</span> },
+        { title: 'B相电流', dataIndex: 'b_ele', key: 5, render: (text) => <span>{text}A</span> },
+        { title: 'C相电流', dataIndex: 'c_ele', key: 6, render: (text) => <span>{text}A</span> },
+        { title: 'A相电压', dataIndex: 'a_pre', key: 7, render: (text) => <span>{text}V</span> },
+        { title: 'B相电压', dataIndex: 'b_pre', key: 8, render: (text) => <span>{text}V</span> },
+        { title: 'C相电压', dataIndex: 'c_pre', key: 9, render: (text) => <span>{text}V</span> },
+        { title: '有功功率', dataIndex: 'has_power', key: 10, render: (text) => <span>{text}W</span> },
+        { title: '无功功率', dataIndex: 'no_power', key: 11, render: (text) => <span>{text}W</span> },
+        { title: '频率', dataIndex: 'rate', key: 12, render: (text) => <span>{text}Hz</span> }
       ],
-      unit: [{ title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '水箱温度', dataIndex: 'waterBoxTemp', render: (text) => <span>{text}°C</span> },
-        { title: '排气温度', dataIndex: 'gasOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '吸气温度', dataIndex: 'gasInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '冷凝温度', dataIndex: 'condensingTemp', render: (text) => <span>{text}°C</span> },
-        { title: '蒸发温度', dataIndex: 'evapTemp', render: (text) => <span>{text}°C</span> },
-        { title: '运行电流', dataIndex: 'ele_flow',render: (text) => <span>{text}A</span> },
-        { title: '运行容量', dataIndex: 'ele_total', render: (text) => <span>{text}F</span> }
+      unit: [{ title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key: 1, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 2, render: (text) => <span>{text}°C</span> },
+        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 3, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 4, render: (text) => <span>{text}°C</span> },
+        { title: '水箱温度', dataIndex: 'waterBoxTemp', key: 5, render: (text) => <span>{text}°C</span> },
+        { title: '排气温度', dataIndex: 'gasOutTemp', key: 6, render: (text) => <span>{text}°C</span> },
+        { title: '吸气温度', dataIndex: 'gasInTemp', key: 7, render: (text) => <span>{text}°C</span> },
+        { title: '冷凝温度', dataIndex: 'condensingTemp', key: 8, render: (text) => <span>{text}°C</span> },
+        { title: '蒸发温度', dataIndex: 'evapTemp', key: 9, render: (text) => <span>{text}°C</span> },
+        { title: '运行电流', dataIndex: 'ele_flow', key: 10, render: (text) => <span>{text}A</span> },
+        { title: '运行容量', dataIndex: 'ele_total', key: 11, render: (text) => <span>{text}F</span> }
       ],
-      twoUnit: [{ title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第一排气温度', dataIndex: 'firstGasOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第一吸气温度', dataIndex: 'firstGasInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第一冷凝温度', dataIndex: 'firstCondensingTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第一蒸发温度', dataIndex: 'firstEvapTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第一运行电流', dataIndex: 'firstEleFlow', render: (text) => <span>{text}A</span> },
-        { title: '第一运行容量', dataIndex: 'firstEleTotal', render: (text) => <span>{text}F</span> },
-        { title: '第二排气温度', dataIndex: 'secondGasOutTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第二吸气温度', dataIndex: 'secondGasInTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第二冷凝温度', dataIndex: 'secondCondensingTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第二蒸发温度', dataIndex: 'secondEvapTemp', render: (text) => <span>{text}°C</span> },
-        { title: '第二运行电流', dataIndex: 'secondEleFlow', render: (text) => <span>{text}A</span> },
-        { title: '第二运行容量', dataIndex: 'secondEleTotal', render: (text) => <span>{text}F</span> },
-        { title: '水箱温度', dataIndex: 'waterBoxTemp', render: (text) => <span>{text}°C</span> }
+      twoUnit: [{ title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key:1, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 2, render: (text) => <span>{text}°C</span> },
+        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 3, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 4, render: (text) => <span>{text}°C</span> },
+        { title: '第一排气温度', dataIndex: 'firstGasOutTemp', key: 5, render: (text) => <span>{text}°C</span> },
+        { title: '第一吸气温度', dataIndex: 'firstGasInTemp', key: 6, render: (text) => <span>{text}°C</span> },
+        { title: '第一冷凝温度', dataIndex: 'firstCondensingTemp', key: 7, render: (text) => <span>{text}°C</span> },
+        { title: '第一蒸发温度', dataIndex: 'firstEvapTemp', key: 8, render: (text) => <span>{text}°C</span> },
+        { title: '第一运行电流', dataIndex: 'firstEleFlow', key: 9, render: (text) => <span>{text}A</span> },
+        { title: '第一运行容量', dataIndex: 'firstEleTotal', key: 10, render: (text) => <span>{text}F</span> },
+        { title: '第二排气温度', dataIndex: 'secondGasOutTemp', key: 11, render: (text) => <span>{text}°C</span> },
+        { title: '第二吸气温度', dataIndex: 'secondGasInTemp', key: 12, render: (text) => <span>{text}°C</span> },
+        { title: '第二冷凝温度', dataIndex: 'secondCondensingTemp', key: 13, render: (text) => <span>{text}°C</span> },
+        { title: '第二蒸发温度', dataIndex: 'secondEvapTemp', key: 14, render: (text) => <span>{text}°C</span> },
+        { title: '第二运行电流', dataIndex: 'secondEleFlow', key: 15, render: (text) => <span>{text}A</span> },
+        { title: '第二运行容量', dataIndex: 'secondEleTotal', key: 16, render: (text) => <span>{text}F</span> },
+        { title: '水箱温度', dataIndex: 'waterBoxTemp', key: 17, render: (text) => <span>{text}°C</span> }
       ]
 
     }
@@ -138,6 +140,9 @@ export default class History extends React.Component {
               </h4>
               <div>
                 <TableView pagination={false} columns={columns.high} data={this.state.data.high} />
+                <div className={styles['graph']}>
+                  <LineGraph data={this.state.data.high} />
+                </div>
               </div>
             </div>
             <div className={styles['item']}>
