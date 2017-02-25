@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table } from 'antd'
+import R from 'ramda'
 type Props = {
   columns: array,
   data: array,
@@ -27,6 +28,7 @@ export default class TableView extends React.Component {
       defaultCurrent: 1,
       total: this.props.total
     }
+    const isFilter = n => n !== null || n
     return (
       <div>
         <Table bordered pagination={this.props.pagination !== false && pageOptions}

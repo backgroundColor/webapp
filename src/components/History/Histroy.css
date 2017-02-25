@@ -29,7 +29,13 @@
           border-bottom: 1px solid #e3e3e3;
           height: 30px;
           line-height: 30px;
-          padding: 0px 10px
+          padding: 0px 10px;
+          a {
+            float: right;
+            span {
+              display: inline-block;
+            }
+          }
         }
         .graph {
           /*padding: 10px;*/

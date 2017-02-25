@@ -22,13 +22,24 @@ export default class Graph extends React.Component {
       rotated: true,
       x: {
         type: 'category',
-        categories: this.props.data.map((item) => item.name) || []
+        categories: this.props.data.map((item) => item.name) || [],
+        tick: {
+          fit: true
+        }
+      },
+      y: {
+        tick: {
+          count: 3,
+          format: (d) => d.toFixed(1)
+        }
       }
     }
-    console.info(data)
+    const padding = {
+      right: 20
+    }
     return (
       <div style={{ height: '100%' }}>
-        <C3Chart data={data} axis={axis} />
+        <C3Chart data={data} axis={axis} padding={padding} />
       </div>
     )
   }
