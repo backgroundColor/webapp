@@ -6,6 +6,12 @@
 .core-layout {
   height: 100%;
   position: relative;
+  .header {
+    height: 50px;
+  }
+  .content {
+    height: calc(100% - 50px);
+  }
 }
 
 .side-nav {

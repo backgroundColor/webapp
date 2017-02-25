@@ -4,6 +4,7 @@ import { Carousel } from 'antd'
 import Plot from '../Plot'
 import Map from './Map'
 import R from 'ramda'
+import LineGraph from '../LineGraph'
 type Props = {
   type: String,
   title: String,
@@ -83,10 +84,18 @@ export default class MapBox extends React.Component {
         <div className={styles['line']}>
           <h3>数据图表</h3>
           <div className={styles['item']}>
-            <Plot id='test1' unit='.C' />
+            <h5><i className='fa fa-thermometer-empty' aria-hidden='true' />&nbsp;&nbsp;温度</h5>
+            <LineGraph height={250} />
+            {
+              // <Plot id='test1' unit='.C' />
+            }
           </div>
           <div className={styles['item']}>
-            <Plot id='test2' unit='kw/h' />
+            <h5><i className='fa fa-battery-full' aria-hidden='true' />&nbsp;&nbsp;能耗</h5>
+            <LineGraph height={250} />
+            {
+              // <Plot id='test2' unit='kw/h' />
+            }
           </div>
         </div>
       </div>

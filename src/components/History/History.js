@@ -174,7 +174,7 @@ export default class History extends React.Component {
                     '供水压力': this.state.data.high && this.state.data.high.map((item) => item.supply_water_press) || [0],
                     '回水压力': this.state.data.high && this.state.data.high.map((item) => item.back_water_press) || [0],
                     '高区流量': this.state.data.high && this.state.data.high.map((item) => item.water_flow) || [0]
-                  }} />
+                  }} height={150} />
                 </div>
               </div>
             </div>
@@ -197,7 +197,7 @@ export default class History extends React.Component {
                     '供水压力': this.state.data.media && this.state.data.media.map((item) => item.supply_water_press) || [0],
                     '回水压力': this.state.data.media && this.state.data.media.map((item) => item.back_water_press) || [0],
                     '中区流量': this.state.data.media && this.state.data.media.map((item) => item.water_flow) || [0]
-                  }} />
+                  }} height={150} />
                 </div>
               </div>
             </div>
@@ -220,7 +220,7 @@ export default class History extends React.Component {
                     '供水压力': this.state.data.low && this.state.data.low.map((item) => item.supply_water_press) || [0],
                     '回水压力': this.state.data.low && this.state.data.low.map((item) => item.back_water_press) || [0],
                     '低区流量': this.state.data.low && this.state.data.low.map((item) => item.water_flow) || [0]
-                  }} />
+                  }} height={150} />
                 </div>
               </div>
             </div>
@@ -254,7 +254,7 @@ export default class History extends React.Component {
                         '有功功率': item && item.map((d) => d.no_power) || [0],
                         '无功功率': item && item.map((d) => d.has_power) || [0],
                         '频率': item && item.map((d) => d.rate) || [0]
-                      }} />
+                      }} height={150} />
                     </div>
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export default class History extends React.Component {
                         '蒸发温度': one && one.map((d) => d.evapTemp) || [0],
                         '运行电流': one && one.map((d) => d.ele_flow) || [0],
                         '运行容量': one && one.map((d) => d.ele_total) || [0]
-                      }} />
+                      }} height={150} />
                     </div>
                   </div>
                 </div>
@@ -321,7 +321,7 @@ export default class History extends React.Component {
                         '电流载荷': outer && outer.map((d) => d.elecLoad) || [0],
                         '蒸发全温': outer && outer.map((d) => d.evapFullTemp) || [0],
                         '冷凝全温': outer && outer.map((d) => d.condensingFullTemp) || [0]
-                      }} />
+                      }} height={150} />
                     </div>
                   </div>
                 </div>
@@ -360,7 +360,7 @@ export default class History extends React.Component {
                         '第二运行电流': two && two.map((d) => d.secondEleFlow) || [0],
                         '第二运行容量': two && two.map((d) => d.secondEleTotal) || [0],
                         '水箱温度': two && two.map((d) => d.waterBoxTemp) || [0]
-                      }} />
+                      }} height={150} />
                     </div>
                   </div>
                 </div>

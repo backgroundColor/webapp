@@ -2,7 +2,8 @@ import React from 'react'
 import C3Chart from 'react-c3js'
 import R from 'ramda'
 type Props = {
-  data: Object
+  data: Object,
+  height: Number
 }
 export default class LineGraph extends React.Component {
   props: Props
@@ -16,12 +17,18 @@ export default class LineGraph extends React.Component {
     const data = {
       columns: R.keys(this.props.data).map((item) => {
         return [item].concat(this.props.data[item])
-      })
+      }) || []
     }
     const axis = {
       x: {
         type: 'category',
         categories: []
+      },
+      y: {
+        tick: {
+          count: 3,
+          format: (d) => d.toFixed(1)
+        }
       }
     }
     const padding = {
@@ -31,7 +38,7 @@ export default class LineGraph extends React.Component {
       left: 50
     }
     const size = {
-      height: 150
+      height: this.props.height || 150
     }
     const tooltip = {
       format: {

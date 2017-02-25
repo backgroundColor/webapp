@@ -94,9 +94,6 @@ export default class LeftPanel extends React.Component {
     const { provinces = [] } = this.state
     return (
       <div className={styles['left-panel']}>
-        <div className={styles['left-panel-logo']}>
-          logo
-        </div>
         <Menu
           mode='inline'
           efaultOpenKeys={['sub1']}

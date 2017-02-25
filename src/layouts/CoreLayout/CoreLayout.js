@@ -15,6 +15,7 @@ import '../../styles/biu-tip.css'
 import LeftPanel from '../../components/LeftPanel'
 import styles from './CoreLayout.css'
 import '../../styles/core.css'
+import HeaderBar from 'components/HeaderBar'
 
 function hideNavbar (location) {
   return location.query['hide-navbar'] === 'true'
@@ -22,22 +23,16 @@ function hideNavbar (location) {
 
 export const CoreLayout = ({ children, location }: { children: HTMLElement, location: Object }) => (
   <div className={styles['core-layout']}>
-    {
-      // <Header />
-    }
-    {!hideNavbar(location)
-      ? <div className={styles['side-nav']}>
-        {
-          // <div className={styles['side-nav__inner']}>
-          //   <SideNav />
-          // </div>
-        }
+    <div className={styles['header']}>
+      <HeaderBar />
+    </div>
+    <div className={styles['content']}>
+      <div className={styles['side-nav']}>
         <LeftPanel />
       </div>
-      : false
-    }
-    <div className={styles['viewport']}>
-      {children}
+      <div className={styles['viewport']}>
+        {children}
+      </div>
     </div>
   </div>
 )
