@@ -24,7 +24,7 @@ export default class RunTime extends React.Component {
   }
 
   componentDidUpdate () {
-    // console.info(this.state)
+    console.info(this.state)
   }
   getProId (id) {
     this.setState({ loading: true })
@@ -55,6 +55,7 @@ export default class RunTime extends React.Component {
         message: '错误',
         description: err
       })
+      this.setState({ loading: false })
     })
   }
 
@@ -100,12 +101,12 @@ export default class RunTime extends React.Component {
               </div>
             </div>
             {
-              !R.isEmpty(oneUnit) &&
+              !R.isEmpty(transBox) &&
               <div className={styles['view']}>
                 {
                   R.filter(isEvent, transBox).map((item, index) => {
                     return <div key={`trans${index}`} className={styles['item']}>
-                      <DataCard title={`${item.name}${index}`} data={[
+                      <DataCard title={`变压器${index + 1}`} data={[
                         { name: 'A相温度', value: item.a_tem },
                         { name: 'B相温度', value: item.b_tem },
                         { name: 'C相温度', value: item.c_tem },

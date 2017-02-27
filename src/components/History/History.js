@@ -66,6 +66,7 @@ export default class History extends React.Component {
         message: '错误',
         description: err
       })
+      this.setState({ loading: false })
     })
   }
   render () {
