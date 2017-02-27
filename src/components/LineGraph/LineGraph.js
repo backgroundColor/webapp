@@ -34,7 +34,7 @@ export default class LineGraph extends React.Component {
     const padding = {
       top: 10,
       right: 20,
-      bottom: 0,
+      bottom: 10,
       left: 50
     }
     const size = {
