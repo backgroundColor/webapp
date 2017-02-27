@@ -5,7 +5,7 @@ const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 type Props = {
-  form: object
+  form: Object
 }
 class AddUser extends React.Component {
   props: Props
@@ -162,14 +162,12 @@ class AddUser extends React.Component {
             {getFieldDecorator('level', {
               rules: [{
                 required: true, message: '请选择一个级别'
-              }, {
-                validator: this.checkLevel
               }]
             })(
               <RadioGroup>
-                <RadioButton value='1'>一级管理员</RadioButton>
-                <RadioButton value='2'>二级管理员</RadioButton>
-                <RadioButton value='3'>三级管理员</RadioButton>
+                <RadioButton value={1}>一级管理员</RadioButton>
+                <RadioButton value={2}>二级管理员</RadioButton>
+                <RadioButton value={3}>三级管理员</RadioButton>
               </RadioGroup>
             )}
           </FormItem>

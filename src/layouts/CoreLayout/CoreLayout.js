@@ -5,11 +5,8 @@ import React from 'react'
 // normalize with antd and add icons & animations
 import 'font-awesome/css/font-awesome.css'
 import 'biu.js/dist/biu.css'
-import 'ag-grid/dist/styles/ag-grid.css'
-import 'ag-grid/dist/styles/theme-fresh.css'
 import 'antd/lib/style/css'
 
-import '../../styles/agtable.css'
 import '../../styles/biu-tip.css'
 
 import LeftPanel from '../../components/LeftPanel'
