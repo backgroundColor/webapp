@@ -59,6 +59,11 @@ class AddUser extends React.Component {
       if (json.code === 0) {
         console.info('success!!')
         this.showErr('success', '注册成功！！')
+      } else {
+        notification['success']({
+          message: '失败',
+          description: '登陆失败！！'
+        })
       }
     })
     .catch((err) => {

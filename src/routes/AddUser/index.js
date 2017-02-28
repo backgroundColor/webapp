@@ -12,6 +12,6 @@ export default (store: Store<*, *>) => ({
       cb(null, AddUser)
 
     /* Webpack named bundle   */
-  }, 'adduser')
+    }, 'adduser')
   }
 })

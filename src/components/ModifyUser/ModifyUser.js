@@ -237,6 +237,7 @@ class ModifyUser extends React.Component {
       if (!err) {
         // console.log('Received values of form: ', values)
         let userMess = {
+          'id' : this.state.userMess.id,
           'name': values.name,
           'pass': values.pass,
           'level': values.level,

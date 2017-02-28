@@ -10,6 +10,7 @@ import ModifyUserRoute from './ModifyUser'
 import WarnRoute from './Warn'
 import RunTimeRoute from './RunTime'
 import HistroyRoute from './Histroy'
+import LoginViewRoute from './Login'
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -25,7 +26,8 @@ export const createRoutes = (store: Store<*, *>) => ({
     ModifyUserRoute(store),
     WarnRoute(store),
     RunTimeRoute(store),
-    HistroyRoute(store)
+    HistroyRoute(store),
+    LoginViewRoute(store)
   ]
 })
 
