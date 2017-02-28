@@ -29,7 +29,7 @@ class Login extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: value
+      body: JSON.stringify(value)
     })
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
