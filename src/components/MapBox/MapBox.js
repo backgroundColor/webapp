@@ -5,6 +5,7 @@ import { Carousel, Spin, notification } from 'antd'
 import Map from './Map'
 import R from 'ramda'
 import LineGraph from '../LineGraph'
+import { universalFetch } from 'modules/fetch'
 type Props = {
   type: String,
   title: String,
@@ -33,7 +34,7 @@ export default class MapBox extends React.Component {
   mapClick (value) {
     // console.info(value)
     this.setState({ loading: true })
-    fetch(`${__TASK_URL__}projects/city?city=${value}`)
+    universalFetch(`${__TASK_URL__}projects/city?city=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       // console.log(json)

@@ -2,6 +2,7 @@ import React from 'react'
 import TableView from '../TableView'
 import ProSelect from '../ProSelect'
 import { notification } from 'antd'
+import { universalFetch } from 'modules/fetch'
 const columns = [{
   title: '标题',
   dataIndex: 'title'
@@ -61,7 +62,7 @@ export default class WarnView extends React.Component {
     this.getData(value, 1)
   }
   getData (id, page) {
-    fetch(`${__TASK_URL__}reports?page=${page}&size=10&id=${id}`)
+    universalFetch(`${__TASK_URL__}reports?page=${page}&size=10&id=${id}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json && json.code === 0) {

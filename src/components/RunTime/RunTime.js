@@ -3,6 +3,7 @@ import styles from './RunTime.css'
 import DataCard from '../DataCard'
 import ProSelect from '../ProSelect'
 import { notification, Spin } from 'antd'
+import { universalFetch } from 'modules/fetch'
 import R from 'ramda'
 export default class RunTime extends React.Component {
   constructor () {
@@ -28,7 +29,7 @@ export default class RunTime extends React.Component {
   }
   getProId (id) {
     this.setState({ loading: true })
-    fetch(`${__TASK_URL__}all_real?id=${id}`)
+    universalFetch(`${__TASK_URL__}all_real?id=${id}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json.code === 0) {

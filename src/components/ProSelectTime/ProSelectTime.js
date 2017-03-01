@@ -3,6 +3,7 @@ import styles from './ProSelectTime.css'
 import { Select, Row, Col, Button, notification, DatePicker } from 'antd'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
+import { universalFetch } from 'modules/fetch'
 moment.locale('zh-cn')
 const { RangePicker } = DatePicker
 const Option = Select.Option
@@ -44,7 +45,7 @@ export default class ProSelect extends React.Component {
     })
   }
   getProvice () {
-    fetch(`${__TASK_URL__}projects/provinces`)
+    universalFetch(`${__TASK_URL__}projects/provinces`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
@@ -66,7 +67,7 @@ export default class ProSelect extends React.Component {
       disabled: true,
       timeRange: []
     })
-    fetch(`${__TASK_URL__}projects/cities?province=${value}`)
+    universalFetch(`${__TASK_URL__}projects/cities?province=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
@@ -87,7 +88,7 @@ export default class ProSelect extends React.Component {
       project: '请选择',
       disabled: true
     })
-    fetch(`${__TASK_URL__}projects/city?city=${value}`)
+    universalFetch(`${__TASK_URL__}projects/city?city=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {

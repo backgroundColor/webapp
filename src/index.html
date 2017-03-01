@@ -4,9 +4,22 @@
   <title>App</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="renderer" content="webkit">
+  <meta name="author" content="backgroundColor,625819969@qq.com">
   <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=KIK1QKZAjlHV7v7A2uWW1hbyGA64ggIi"></script>
+  <script>
+    if(window.navigator.userAgent.indexOf('MSIE 9.0') > 0 ||
+      window.navigator.userAgent.indexOf('MSIE 10.0') > 0) {
+      document.write("<scri"+"pt src='/MutationObserver.js'></scr"+"ipt>");
+      document.write("<scri"+"pt src='/flexibility.js'></scr"+"ipt>");
+    }
+  </script>
 </head>
 <body>
   <div id="root" style="height: 100%"></div>
+  <!-- begin configuration -->
+  <script type="text/javascript" src="/config.js"></script>
+  <!-- end configuration -->
 </body>
 </html>

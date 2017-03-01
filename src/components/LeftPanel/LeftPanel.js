@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './LeftPanel.css'
 import { IndexLink, Link } from 'react-router'
 import { Menu, Icon } from 'antd'
+import { universalFetch } from 'modules/fetch'
 const SubMenu = Menu.SubMenu
 export default class LeftPanel extends React.Component {
   state = {
@@ -48,13 +49,13 @@ export default class LeftPanel extends React.Component {
 
   getMenu () {
     const url = `${__TASK_URL__}projects/provinces`
-    fetch(url)
+    universalFetch(url)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
         let newList = []
         const promises = json.map((id) =>
-          fetch(`${__TASK_URL__}projects/cities?province=${id}`)
+          universalFetch(`${__TASK_URL__}projects/cities?province=${id}`)
           .then(resp => resp.json())
           .then((json) => {
             return { name: id, list: json }

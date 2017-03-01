@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './ProSelect.css'
 import { Select, Row, Col, Button, notification } from 'antd'
+import { universalFetch } from 'modules/fetch'
 const Option = Select.Option
 type Props = {
   getData: Function,
@@ -39,7 +40,7 @@ export default class ProSelect extends React.Component {
     })
   }
   getProvice () {
-    fetch(`${__TASK_URL__}projects/provinces`)
+    universalFetch(`${__TASK_URL__}projects/provinces`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
@@ -60,7 +61,7 @@ export default class ProSelect extends React.Component {
       project: '请选择',
       disabled: true
     })
-    fetch(`${__TASK_URL__}projects/cities?province=${value}`)
+    universalFetch(`${__TASK_URL__}projects/cities?province=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
@@ -81,7 +82,7 @@ export default class ProSelect extends React.Component {
       project: '请选择',
       disabled: true
     })
-    fetch(`${__TASK_URL__}projects/city?city=${value}`)
+    universalFetch(`${__TASK_URL__}projects/city?city=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
@@ -112,7 +113,7 @@ export default class ProSelect extends React.Component {
   handleGetData () {
     this.props.getProId && this.props.getProId(this.state.projectId)
     if (!this.props.getData) return
-    fetch(`${__TASK_URL__}reports?page=1&size=10&id=${this.state.projectId}`)
+    universalFetch(`${__TASK_URL__}reports?page=1&size=10&id=${this.state.projectId}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {

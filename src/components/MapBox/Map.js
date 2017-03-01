@@ -2,6 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux'
+import { universalFetch } from 'modules/fetch'
 type Props = {
   onClick: Function,
   push: Function,
@@ -33,7 +34,7 @@ class Map extends React.Component {
     }
   }
   getAllCities () {
-    fetch(`${__TASK_URL__}projects/cities`)
+    universalFetch(`${__TASK_URL__}projects/cities`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       // console.log(R.dropRepeats(json))

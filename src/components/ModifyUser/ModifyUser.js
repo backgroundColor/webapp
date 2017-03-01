@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, Tooltip, Icon, Input, Table, Popconfirm, notification, Modal, Radio } from 'antd'
 import EditableCell from './EditableCell'
+import { universalFetch } from 'modules/fetch'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -101,7 +102,7 @@ class ModifyUser extends React.Component {
   delUser (index) {
     const { data } = this.state
     console.log(data[index])
-    fetch(`${__TASK_URL__}user/delete`, {
+    universalFetch(`${__TASK_URL__}user/delete`, {
       method: 'POST',
       header: {
         'Accept': 'application/json',
@@ -138,7 +139,7 @@ class ModifyUser extends React.Component {
   }
 
   getUsers () {
-    fetch(`${__TASK_URL__}allusers`, {
+    universalFetch(`${__TASK_URL__}allusers`, {
       method: 'POST',
       header: {
         'Accept': 'application/json',
@@ -251,7 +252,7 @@ class ModifyUser extends React.Component {
   }
   queryModify (value) {
     console.log(value)
-    fetch(`${__TASK_URL__}user/modify`, {
+    universalFetch(`${__TASK_URL__}user/modify`, {
       method: 'POST',
       header: {
         'Accept': 'application/json',

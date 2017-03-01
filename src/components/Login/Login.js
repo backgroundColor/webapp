@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './Login.css'
 import { Form, Icon, Input, Button, notification } from 'antd'
+import { universalFetch } from 'modules/fetch'
 const FormItem = Form.Item
 type Props = {
   form: Object
@@ -23,7 +24,7 @@ class Login extends React.Component {
   }
 
   loginFunc (value) {
-    fetch(`${__TASK_URL__}login`, {
+    universalFetch(`${__TASK_URL__}login`, {
       method: 'POST',
       header: {
         'Accept': 'application/json',
