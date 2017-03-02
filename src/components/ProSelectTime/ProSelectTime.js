@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './ProSelectTime.css'
-import { Select, Row, Col, Button, notification, DatePicker } from 'antd'
+import { Select, Row, Col, Button, notification, DatePicker, Spin } from 'antd'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { connect } from 'react-redux'
@@ -153,16 +153,18 @@ class ProSelectTime extends React.Component {
             </span>
           </Col>
           <Col span={5}>
-            <span>项目:&nbsp;&nbsp;</span>
-            <input type='hidden' value={projectId} ref='' />
-            <span>
-              <Select disabled={projects.length === 0}
-                onChange={this.handleProject}
-                value={project}
-                style={{ width: 130 }}>
-                {projectOptions}
-              </Select>
-            </span>
+            <Spin size='samll' spinning={projects.length === 0}>
+              <span>项目:&nbsp;&nbsp;</span>
+              <input type='hidden' value={projectId} ref='' />
+              <span>
+                <Select disabled={projects.length === 0}
+                  onChange={this.handleProject}
+                  value={project}
+                  style={{ width: 130 }}>
+                  {projectOptions}
+                </Select>
+              </span>
+            </Spin>
           </Col>
           <Col span={6}>
             <RangePicker
