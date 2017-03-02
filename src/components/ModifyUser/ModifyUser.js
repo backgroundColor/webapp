@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Tooltip, Icon, Input, Table, Popconfirm, notification, Modal, Radio } from 'antd'
+import { Form, Tooltip, Icon, Input, Table, Popconfirm, notification, Modal, Radio, Spin } from 'antd'
 import EditableCell from './EditableCell'
 import { universalFetch } from 'modules/fetch'
 const FormItem = Form.Item
@@ -49,32 +49,13 @@ class ModifyUser extends React.Component {
           </Popconfirm>
         </span>
       }
-      // render: (text, record, index) => {
-      //   const { editable } = this.state.data[index].name
-      //   return (<div className='editable-row-operations'>
-      //     {
-      //       editable
-      //         ? <span>
-      //           <a onClick={() => this.editDone(index, 'save')}>保存</a>&nbsp;&nbsp;
-      //           <Popconfirm title='确定取消?' onConfirm={() => this.editDone(index, 'cancel')}>
-      //             <a>取消</a>
-      //           </Popconfirm>
-      //         </span>
-      //         : <span>
-      //           <a onClick={() => this.edit(index)}>修改</a>&nbsp;&nbsp;
-      //           <Popconfirm title='确定删除?' onConfirm={() => this.delUser(index)}>
-      //             <a>删除</a>
-      //           </Popconfirm>
-      //         </span>
-      //     }
-      //   </div>)
-      // }
     }]
     this.state = {
       data: [],
       visible: false,
       confirmLoading: false,
-      userMess: {}
+      userMess: {},
+      loading: false
     }
     this.getUsers = this.getUsers.bind(this)
     this.delUser = this.delUser.bind(this)
@@ -139,6 +120,7 @@ class ModifyUser extends React.Component {
   }
 
   getUsers () {
+    this.setState({ loading: true })
     universalFetch(`${__TASK_URL__}allusers`, {
       method: 'POST',
       header: {
@@ -176,7 +158,8 @@ class ModifyUser extends React.Component {
                 value: item.createTime
               }
             }
-          })
+          }),
+          loading: false
         })
       }
     })
@@ -186,6 +169,7 @@ class ModifyUser extends React.Component {
         message: '错误',
         description: '访问失败'
       })
+      this.setState({ loading: false })
     })
   }
 
@@ -305,7 +289,7 @@ class ModifyUser extends React.Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 }
     }
-    const { data, userMess } = this.state
+    const { data, userMess, loading } = this.state
     const dataSource = data.map((item) => {
       const obj = {}
       Object.keys(item).forEach((key) => {
@@ -316,7 +300,9 @@ class ModifyUser extends React.Component {
     const columns = this.columns
     return (
       <div>
-        <Table bordered dataSource={dataSource} columns={columns} />
+        <Spin tip='加载中...' spinning={loading}>
+          <Table bordered dataSource={dataSource} columns={columns} />
+        </Spin>
         <Modal title='Modal' visible={this.state.visible}
           onOk={this.handleOk} onCancel={this.handleCancel}
           confirmLoading={this.state.confirmLoading}

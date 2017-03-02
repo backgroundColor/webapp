@@ -27,7 +27,8 @@ class ProSelectTime extends React.Component {
       city: '请选择',
       project: '请选择',
       disabled: true,
-      projectId: ''
+      projectId: '',
+      loading: false
     }
     this.handleProvince = this.handleProvince.bind(this)
     this.handleCities = this.handleCities.bind(this)
@@ -74,20 +75,23 @@ class ProSelectTime extends React.Component {
     this.setState({
       city: value,
       project: '请选择',
-      disabled: true
+      disabled: true,
+      loading: true
     })
     universalFetch(`${__TASK_URL__}projects/city?city=${value}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       if (json) {
         this.setState({
-          projects: json.body
+          projects: json.body,
+          loading: false
         })
       }
     })
     .catch((err) => {
       console.error(err)
       this.showErr('error')
+      this.setState({ loading: false })
     })
   }
   handleProject (value) {
@@ -136,7 +140,7 @@ class ProSelectTime extends React.Component {
               value={province} style={{ width: 130 }}>
               {
                 cityMess.map((item) => {
-                  return <Option key={`proTime${item.name}`}>{item.name}</Option>
+                  return <Option key={item.name}>{item.name}</Option>
                 })
               }
             </Select>
@@ -153,7 +157,7 @@ class ProSelectTime extends React.Component {
             </span>
           </Col>
           <Col span={5}>
-            <Spin size='small' spinning={projects.length === 0}>
+            <Spin size='small' spinning={this.state.loading}>
               <span>项目:&nbsp;&nbsp;</span>
               <input type='hidden' value={projectId} ref='' />
               <span>
