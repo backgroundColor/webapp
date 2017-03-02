@@ -2,23 +2,41 @@ import React from 'react'
 import styles from './LeftPanel.css'
 import { IndexLink, Link } from 'react-router'
 import { Menu, Icon } from 'antd'
-import { universalFetch } from 'modules/fetch'
+import { connect } from 'react-redux'
+import { getCityData, fetchCityData } from 'store/CityMess/action'
+import R from 'ramda'
 const SubMenu = Menu.SubMenu
-export default class LeftPanel extends React.Component {
+
+type Props = {
+  cityMess: Object,
+  getCityData: Function,
+  fetchCityData: Function
+}
+class LeftPanel extends React.Component {
+  props: Props
   state = {
     openKeys: [],
     current: '1',
     provinces: []
   }
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.onOpenChange = this.onOpenChange.bind(this)
     this.handleClick = this.handleClick.bind(this)
-    this.getMenu = this.getMenu.bind(this)
   }
 
   componentDidMount () {
-    this.getMenu()
+    this.props.fetchCityData()
+    this.setState({
+      provinces: this.props.cityMess
+    })
+  }
+  componentWillReceiveProps (nextProps) {
+    if (!R.equals(nextProps, this.props)) {
+      this.setState({
+        provinces: nextProps.cityMess
+      })
+    }
   }
   handleClick (e) {
     console.log('Clicked: ', e)
@@ -47,50 +65,6 @@ export default class LeftPanel extends React.Component {
     return map[key] || []
   }
 
-  getMenu () {
-    const url = `${__TASK_URL__}projects/provinces`
-    universalFetch(url)
-    .then((res) => res.status === 200 && res.json())
-    .then((json) => {
-      if (json) {
-        let newList = []
-        const promises = json.map((id) =>
-          universalFetch(`${__TASK_URL__}projects/cities?province=${id}`)
-          .then(resp => resp.json())
-          .then((json) => {
-            return { name: id, list: json }
-          })
-        )
-
-        Promise.all(promises).then((post) => {
-          newList = post.map((json) => json)
-          // console.log(newList)
-          this.setState({
-            provinces: newList
-          })
-        })
-        // json.forEach((item) => {
-        //   let listJson = { name: '', cities: [] }
-        //   listJson.name = item
-        //   const citiesUrl = `${__TASK_URL__}projects/cities?province=${item}`
-        //   fetch(citiesUrl)
-        //   .then((res) => res.status === 200 && res.json())
-        //   .then((data) => {
-        //     listJson.cities = data.map((item) => item)
-        //   })
-        //   newList.push(listJson)
-        // })
-        // this.setState({
-        //   provinces: newList
-        // })
-      }
-    })
-    .catch((err) => {
-      console.info('err!!')
-      console.error(err)
-    })
-  }
-
   render () {
     const { provinces = [] } = this.state
     return (
@@ -103,7 +77,7 @@ export default class LeftPanel extends React.Component {
         >
           <SubMenu key='sub1' title={<span><Icon type='camera' /><span>实时监控</span></span>}>
             <Menu.Item key='1'>
-              <Link to='/maps'>全部</Link>
+              <IndexLink to='/maps'>全部</IndexLink>
             </Menu.Item>
             {
               provinces.map((item, index) => {
@@ -118,18 +92,23 @@ export default class LeftPanel extends React.Component {
             }
           </SubMenu>
           <SubMenu key='sub2' title={<span><Icon type='calendar' /><span>数据中心</span></span>}>
-            <Menu.Item key='5'><Link to='runtime'>实时数据</Link></Menu.Item>
-            <Menu.Item key='6'><Link to='history'>历史数据</Link></Menu.Item>
+            <Menu.Item key='5'><Link to='runtime' activeClassName='active'>实时数据</Link></Menu.Item>
+            <Menu.Item key='6'><Link to='history' activeClassName='active'>历史数据</Link></Menu.Item>
           </SubMenu>
           <SubMenu key='sub4' title={<span><Icon type='pushpin-o' /><span>报警记录</span></span>}>
-            <Menu.Item key='9'><Link to='/warning'>记录</Link></Menu.Item>
+            <Menu.Item key='9'><Link to='/warning' activeClassName='active'>记录</Link></Menu.Item>
           </SubMenu>
           <SubMenu key='sub5' title={<span><Icon type='setting' /><span>系统设置</span></span>}>
-            <Menu.Item key='13'><Link to='/adduser'>添加用户</Link></Menu.Item>
-            <Menu.Item key='14'><Link to='/modifyuser'>修改用户</Link></Menu.Item>
+            <Menu.Item key='13'><Link to='/adduser' activeClassName='active'>添加用户</Link></Menu.Item>
+            <Menu.Item key='14'><Link to='/modifyuser' activeClassName='active'>修改用户</Link></Menu.Item>
           </SubMenu>
         </Menu>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  cityMess: state.cityMess.citymess
+})
+export default connect(mapStateToProps, { getCityData, fetchCityData })(LeftPanel)

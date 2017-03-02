@@ -1,7 +1,7 @@
 import React from 'react'
 import TableView from '../TableView'
 import ProSelect from '../ProSelect'
-import { notification } from 'antd'
+import { notification, Spin } from 'antd'
 import { universalFetch } from 'modules/fetch'
 const columns = [{
   title: '标题',
@@ -51,7 +51,8 @@ export default class WarnView extends React.Component {
     this.state = {
       data: [],
       projectId: 0,
-      total: 1
+      total: 1,
+      loading: false
     }
     this.getData = this.getData.bind(this)
     this.getProId = this.getProId.bind(this)
@@ -62,6 +63,7 @@ export default class WarnView extends React.Component {
     this.getData(value, 1)
   }
   getData (id, page) {
+    this.setState({ loading: true })
     universalFetch(`${__TASK_URL__}reports?page=${page}&size=10&id=${id}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
@@ -69,7 +71,7 @@ export default class WarnView extends React.Component {
         const data = json.body.items.map((item, index) => {
           return { key: index + 1, title: item.title, content: item.content, createTime: item.createTime }
         })
-        this.setState({ data, total: json.body.info.total })
+        this.setState({ data, total: json.body.info.total, loading: false })
       }
     })
     .catch((err) => {
@@ -78,6 +80,7 @@ export default class WarnView extends React.Component {
         message: '错误',
         description: '获取项目数据失败！！'
       })
+      this.setState({ loading: false })
     })
   }
   render () {
@@ -85,10 +88,12 @@ export default class WarnView extends React.Component {
     return (
       <div>
         <ProSelect getProId={this.getProId} str='' />
-        <TableView columns={columns} data={data}
-          total={total}
-          onChange={this.getData}
-          d={projectId} />
+        <Spin tip='加载中...' spinning={this.state.loading}>
+          <TableView columns={columns} data={data}
+            total={total}
+            onChange={this.getData}
+            d={projectId} />
+        </Spin>
       </div>
     )
   }

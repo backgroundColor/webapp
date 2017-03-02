@@ -88,7 +88,7 @@ export default class MapBox extends React.Component {
                   <li><span className={styles['name']}>项目:</span><span>{data.name}</span></li>
                   <li><span className={styles['name']}>创建时间:</span><span>{data.createTime}</span></li>
                   <li><span className={styles['name']}>描述:</span>
-                    <div className={styles['description']}>{data.desc}</div>
+                    <div className={styles['description']} title={data.desc}>{data.desc}</div>
                   </li>
                 </ul>
               </div>

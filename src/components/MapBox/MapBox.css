@@ -1,7 +1,7 @@
 .map-box {
   height: 100%;
   .message {
-    height: 60%;
+    height: 500px;
     /*padding: 10px;*/
     .map {
       width: 700px;
@@ -60,7 +60,7 @@
     }
   }
   .line {
-    height: 40%;
+    height: 300px;
     padding: 10px 0px;
     text-indent: 1em;
     h3 {

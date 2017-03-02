@@ -3,19 +3,23 @@ import styles from './ProSelectTime.css'
 import { Select, Row, Col, Button, notification, DatePicker } from 'antd'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
+import { connect } from 'react-redux'
 import { universalFetch } from 'modules/fetch'
+import R from 'ramda'
 moment.locale('zh-cn')
 const { RangePicker } = DatePicker
 const Option = Select.Option
 type Props = {
   getData: Function,
-  getProId: Function
+  getProId: Function,
+  cityMess: Object
 }
-export default class ProSelect extends React.Component {
+class ProSelectTime extends React.Component {
   props: Props
   constructor (props) {
     super(props)
     this.state = {
+      cityMess: [],
       provinces: [],
       cities: [],
       projects: [],
@@ -25,18 +29,26 @@ export default class ProSelect extends React.Component {
       disabled: true,
       projectId: ''
     }
-    this.getProvice = this.getProvice.bind(this)
     this.handleProvince = this.handleProvince.bind(this)
     this.handleCities = this.handleCities.bind(this)
     this.handleProject = this.handleProject.bind(this)
     this.handleGetData = this.handleGetData.bind(this)
     this.timeRangeChange = this.timeRangeChange.bind(this)
   }
+
   componentDidMount () {
-    this.getProvice()
+    this.setState({
+      cityMess: this.props.cityMess
+    })
   }
-  componentDidUpdate () {
-    // console.info(this.state)
+
+  componentWillReceiveProps (nextProps) {
+    if (!R.equals(nextProps, this.props)) {
+      console.info('ProSelect:', nextProps)
+      this.setState({
+        cityMess: nextProps.cityMess
+      })
+    }
   }
   showErr (type, message) {
     notification[type]({
@@ -44,41 +56,17 @@ export default class ProSelect extends React.Component {
       description: message
     })
   }
-  getProvice () {
-    universalFetch(`${__TASK_URL__}projects/provinces`)
-    .then((res) => res.status === 200 && res.json())
-    .then((json) => {
-      if (json) {
-        this.setState({
-          provinces: json
-        })
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-      this.showErr('error', '获取省失败！！')
-    })
-  }
+
   handleProvince (value) {
+    const isFilter = n => n.name === value
+    const { cityMess } = this.state
     this.setState({
       province: value,
       city: '请选择',
       project: '请选择',
       disabled: true,
-      timeRange: []
-    })
-    universalFetch(`${__TASK_URL__}projects/cities?province=${value}`)
-    .then((res) => res.status === 200 && res.json())
-    .then((json) => {
-      if (json) {
-        this.setState({
-          cities: json
-        })
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-      this.showErr('error', '获取城市失败！！')
+      timeRange: [],
+      cities: R.filter(isFilter, cityMess)[0].list
     })
   }
   handleCities (value) {
@@ -131,10 +119,9 @@ export default class ProSelect extends React.Component {
     })
   }
   render () {
-    const { provinces = [], cities = [],
+    const { cityMess = [], cities = [],
       projects = [], province = '',
       city = '', project = '', disabled = true, projectId = '' } = this.state
-    const provinceOptions = provinces.map(item => <Option key={item}>{item}</Option>)
     const cityOptions = cities.map(item => <Option key={item}>{item}</Option>)
     const projectOptions = projects.map(item => <Option key={item.name}>{item.name}</Option>)
     const dateFormat = 'YYYY/MM/DD'
@@ -144,10 +131,14 @@ export default class ProSelect extends React.Component {
           style={{ height: '100%', lineHeight: '45px' }}>
           <Col span={5}>
             <span>省:&nbsp;&nbsp;</span>
-            <Select disabled={provinces.length === 0}
+            <Select disabled={cityMess.length === 0}
               onChange={this.handleProvince}
               value={province} style={{ width: 130 }}>
-              {provinceOptions}
+              {
+                cityMess.map((item) => {
+                  return <Option key={`proTime${item.name}`}>{item.name}</Option>
+                })
+              }
             </Select>
           </Col>
           <Col span={5}>
@@ -187,3 +178,9 @@ export default class ProSelect extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  cityMess: state.cityMess.citymess
+})
+
+export default connect(mapStateToProps, {})(ProSelectTime)
