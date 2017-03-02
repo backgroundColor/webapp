@@ -153,7 +153,7 @@ class ProSelectTime extends React.Component {
             </span>
           </Col>
           <Col span={5}>
-            <Spin size='samll' spinning={projects.length === 0}>
+            <Spin size='small' spinning={projects.length === 0}>
               <span>项目:&nbsp;&nbsp;</span>
               <input type='hidden' value={projectId} ref='' />
               <span>

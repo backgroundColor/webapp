@@ -4,7 +4,7 @@
     position: relative;
   }
   .grid{
-    height: 290px;
+    min-height: 290px;
     width: 100%;
   }
   .item-data {
@@ -16,7 +16,8 @@
     left: 0;
     top: 48px;
     bottom: 0px;*/
-    height: 290px;
+    height: inherit;
+    min-height: 290px;
     width: 100%
   }
 }

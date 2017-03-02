@@ -17,9 +17,13 @@ export default class DataCard extends React.Component {
     this.showGrid = this.showGrid.bind(this)
   }
 
+  componentDidMount () {
+  }
   showGrid () {
+    console.info(this.refs['gridbody'].offsetHeight)
     this.setState({
-      show: this.state.show === 'message' ? 'grid' : 'message'
+      show: this.state.show === 'message' ? 'grid' : 'message',
+      cardH: this.refs['gridbody'].offsetHeight
     })
   }
   render () {
@@ -31,7 +35,8 @@ export default class DataCard extends React.Component {
             <Card title={this.props.title}
               extra={<a href='javascript:;' onClick={this.showGrid}>
                 <i className='fa fa-area-chart' aria-hidden='true' /></a>}>
-              <div className={styles['gridbody']} style={{ display: show === 'message' ? 'block' : 'none' }}>
+              <div className={styles['gridbody']} ref='gridbody'
+                style={{ display: show === 'message' ? 'block' : 'none' }}>
                 {
                   this.props.data && this.props.data.map((item, index) => {
                     return <p className={styles['item-data']} key={`data${index}`}>
@@ -66,7 +71,7 @@ export default class DataCard extends React.Component {
                 }
               </div>
               <div className={styles['gridbody']}
-                style={{ display: show === 'grid' ? 'block' : 'none' }}>
+                style={{ display: show === 'grid' ? 'block' : 'none', height: `${this.state.cardH}px` }}>
                 <Graph data={this.props.data} type='bar' />
                 {
                   // <DataGrid data={this.props.data} />

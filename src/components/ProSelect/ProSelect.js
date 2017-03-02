@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './ProSelect.css'
-import { Select, Row, Col, Button, notification } from 'antd'
+import { Select, Row, Col, Button, notification, Spin } from 'antd'
 import { connect } from 'react-redux'
 import { universalFetch } from 'modules/fetch'
 import R from 'ramda'
@@ -23,7 +23,8 @@ class ProSelect extends React.Component {
       city: '请选择',
       project: '请选择',
       disabled: true,
-      projectId: ''
+      projectId: '',
+      loading: false
     }
     this.handleProvince = this.handleProvince.bind(this)
     this.handleCities = this.handleCities.bind(this)
@@ -67,7 +68,8 @@ class ProSelect extends React.Component {
     this.setState({
       city: value,
       project: '请选择',
-      disabled: true
+      disabled: true,
+      loading: true
     })
     universalFetch(`${__TASK_URL__}projects/city?city=${value}`)
     .then((res) => res.status === 200 && res.json())
@@ -75,13 +77,15 @@ class ProSelect extends React.Component {
       if (json) {
         console.info('city', json)
         this.setState({
-          projects: json.body
+          projects: json.body,
+          loading: false
         })
       }
     })
     .catch((err) => {
       console.error(err)
       this.showErr('error')
+      this.setState({ loading: false })
     })
   }
   handleProject (value) {
@@ -146,16 +150,18 @@ class ProSelect extends React.Component {
             </span>
           </Col>
           <Col span={7}>
-            <span>项目:&nbsp;&nbsp;</span>
-            <input type='hidden' value={projectId} ref='' />
-            <span>
-              <Select disabled={projects.length === 0}
-                onChange={this.handleProject}
-                value={project}
-                style={{ width: 150 }}>
-                {projectOptions}
-              </Select>
-            </span>
+            <Spin size='small' spinning={this.state.loading}>
+              <span>项目:&nbsp;&nbsp;</span>
+              <input type='hidden' value={projectId} ref='' />
+              <span>
+                <Select disabled={projects.length === 0}
+                  onChange={this.handleProject}
+                  value={project}
+                  style={{ width: 150 }}>
+                  {projectOptions}
+                </Select>
+              </span>
+            </Spin>
           </Col>
           <Col span={3}>
             <Button onClick={this.handleGetData} type='primary' disabled={disabled}>查询</Button>
