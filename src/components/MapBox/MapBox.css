@@ -80,3 +80,28 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .map-box {
+    .message {
+      height: auto;
+      .map {
+        width: 100%;
+        float: none;
+        height: 200px;
+      }
+      .project-mess {
+        min-height: 300px;
+        margin-left: 0px;
+      }
+    }
+    .line {
+      height: auto;
+      .item {
+        height: 300px;
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { MENU_OPEN, MENU_CLOSE } from './action'
 
 export function menuStatus (state = {
-  menustatus: 'close'
+  menustatus: 'open'
 }, action) {
   switch (action.type) {
     case MENU_OPEN:

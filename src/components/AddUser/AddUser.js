@@ -51,9 +51,9 @@ class AddUser extends React.Component {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify(value)
+      body: value
     })
     .then((res) => res.status === 200 && res.json())
     .then((json) => {

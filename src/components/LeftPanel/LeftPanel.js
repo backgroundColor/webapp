@@ -10,7 +10,8 @@ const SubMenu = Menu.SubMenu
 type Props = {
   cityMess: Object,
   getCityData: Function,
-  fetchCityData: Function
+  fetchCityData: Function,
+  menustatus: String
 }
 class LeftPanel extends React.Component {
   props: Props
@@ -33,6 +34,7 @@ class LeftPanel extends React.Component {
   }
   componentWillReceiveProps (nextProps) {
     if (!R.equals(nextProps, this.props)) {
+      // console.info('menustatus', nextProps.menustatus)
       this.setState({
         provinces: nextProps.cityMess
       })
@@ -67,8 +69,9 @@ class LeftPanel extends React.Component {
 
   render () {
     const { provinces = [] } = this.state
+    const { menustatus } = this.props
     return (
-      <div className={styles['left-panel']}>
+      <div className={styles['left-panel']} style={{ display: menustatus === 'close' ? 'none' : 'block' }}>
         <Spin tip='菜单加载' size='small' spinning={provinces.length === 0}>
           <Menu
             mode='inline'
@@ -111,6 +114,7 @@ class LeftPanel extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  cityMess: state.cityMess.citymess
+  cityMess: state.cityMess.citymess,
+  menustatus: state.menuStatus.menustatus
 })
 export default connect(mapStateToProps, { getCityData, fetchCityData })(LeftPanel)

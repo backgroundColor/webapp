@@ -64,5 +64,6 @@
     width: 100%;
     height: auto;
     display: none;
+    transition: all 1s ease;
   }
 }

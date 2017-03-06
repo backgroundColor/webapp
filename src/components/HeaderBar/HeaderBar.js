@@ -10,8 +10,20 @@ type Props = {
 class HeaderBar extends React.Component {
   props: Props
 
-  componentDidMount () {
-    console.info('menustatus', this.props)
+  constructor (props) {
+    super(props)
+    this.state = {
+      // showOrHide: this.props.menustatus
+    }
+    this.menuClick = this.menuClick.bind(this)
+  }
+  componentDidUpdate () {
+    // console.info('menustatus', this.props)
+  }
+  menuClick () {
+    // const { showOrHide } = this.state
+    // console.log(this.state.showOrHide)
+    this.props.menustatus === 'close' ? this.props.menuOpen() : this.props.menuClose()
   }
   render () {
     return (
@@ -20,7 +32,7 @@ class HeaderBar extends React.Component {
           <img height='30' src={require('../../static/logo.png')} />
         </div>
         <div className={styles['vertical-menu']}>
-          <i className='fa fa-bars' aria-hidden='true' />
+          <i onClick={this.menuClick} className='fa fa-bars' aria-hidden='true' />
         </div>
         <div className={styles['login']}>
           hi ~ <span>admin</span> &nbsp;&nbsp;&nbsp;
@@ -32,7 +44,7 @@ class HeaderBar extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  menustatus: state.menuStatus
+  menustatus: state.menuStatus.menustatus
 })
 
 export default connect(mapStateToProps, { menuOpen, menuClose })(HeaderBar)
