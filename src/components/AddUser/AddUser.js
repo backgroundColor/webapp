@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './AddUser.css'
-import { Form, Input, Tooltip, Icon, Cascader, Row, Col, Checkbox, Button, notification, DatePicker, Radio} from 'antd'
+import { Form, Input, Tooltip, Icon, Button, notification, Radio } from 'antd'
 import { universalFetch } from 'modules/fetch'
 const FormItem = Form.Item
 const RadioButton = Radio.Button
@@ -49,7 +49,7 @@ class AddUser extends React.Component {
     console.log(value)
     universalFetch(`${__TASK_URL__}users`, {
       method: 'POST',
-      header: {
+      headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },

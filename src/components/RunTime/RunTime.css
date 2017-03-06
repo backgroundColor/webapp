@@ -27,9 +27,11 @@
       display: flex;*/
       .item-all {
         height: 100%;
-        float: left;
+        /*float: left;*/
         width: 32%;
         margin: 5px;
+        min-width: 300px;
+        display: inline-block;
       }
       .item {
         /*flex: 1;*/

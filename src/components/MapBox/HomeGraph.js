@@ -1,29 +1,35 @@
 import React from 'react'
 import C3Chart from 'react-c3js'
 import R from 'ramda'
+import moment from 'moment'
 type Props = {
   data: Object,
   height: Number,
   axis: Array
 }
-export default class LineGraph extends React.Component {
+export default class HomeGraph extends React.Component {
   props: Props
   componentDidMount () {
     // console.info(this.props.data)
   }
   componentDidUpdate () {
-    console.info(this.props.axis instanceof Array)
+    // console.info(this.props.axis instanceof Array)
   }
   render () {
     const data = {
+      x: 'x',
+      xFormat: '%H:%M',
+      type: 'spline',
       columns: R.keys(this.props.data).map((item) => {
         return [item].concat(this.props.data[item])
       }) || []
     }
     const axis = {
       x: {
-        type: 'category',
-        categories: this.props.axis && this.props.axis instanceof Array ? this.props.axis : []
+        type : 'timeseries',
+        tick: {
+          format: '%H:%M'
+        }
       },
       y: {
         tick: {
@@ -43,19 +49,23 @@ export default class LineGraph extends React.Component {
     }
     const tooltip = {
       format: {
-        title: (d) => { return '数据 ' + d },
+        title: (d) => { return '数据 ' + moment(d).format('HH:mm') },
         value: (value, ratio, id) => {
+          // console.log(ratio)
+          // if (id.indexOf('温') !== -1) {
+          //   return value + '°C'
+          // }
+          // if (id.indexOf('能') !== -1) {
+          //   return value + '°C'
+          // }
           return value
           // switch (id) {
-          //   case '供水温度':
-          //   case '回水温度':
-          //   case '室内温度':
+          //   case '高温':
+          //   case '中温':
+          //   case '低温':
           //     return value + '°C'
-          //   case '供水压力':
-          //   case '回水压力':
-          //     return value + 'Pa'
-          //   case '高区流量':
-          //     return value + 'cc'
+          //   case '能耗':
+          //     return value + 'W'
           //   default:
           //     return value
           // }

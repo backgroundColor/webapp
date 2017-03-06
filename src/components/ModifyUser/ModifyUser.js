@@ -87,7 +87,7 @@ class ModifyUser extends React.Component {
       method: 'POST',
       header: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: JSON.stringify({ id: data[index]['id'].value })
     })
@@ -240,7 +240,7 @@ class ModifyUser extends React.Component {
       method: 'POST',
       header: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'x-www-form-urlencoded'
       },
       body: value
     })

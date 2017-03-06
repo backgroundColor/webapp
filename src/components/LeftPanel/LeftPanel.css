@@ -58,3 +58,11 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .left-panel {
+    width: 100%;
+    height: auto;
+    display: none;
+  }
+}
