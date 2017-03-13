@@ -18,6 +18,11 @@ export default class Graph extends React.Component {
       ],
       type: 'bar'
     }
+    // const bar = {
+    //   width: {
+    //     ratio: 0.1 // this makes bar width 50% of length between ticks
+    //   }
+    // }
     const axis = {
       rotated: true,
       x: {

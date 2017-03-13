@@ -12,6 +12,15 @@
   .content {
     padding: 10px 0px;
     height: 100%;
+    .data-item {
+      min-height: 200px;
+      /*background-color: #0f0;*/
+      .table-data {
+        float: left;
+        height: 100%;
+        width: 30%;
+      }
+    }
     /*display: flex;
     flex-direction: column;*/
     .view {

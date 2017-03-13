@@ -1,5 +1,17 @@
 .datagrid{
-  height: 290px;
+  /*height: 290px;*/
+  .item {
+    float: left;
+  }
+  .item:first-child {
+    width: 40%;
+  }
+  .item:last-child {
+    width: 60%;
+  }
+  .wraps {
+    padding: 10px;
+  }
   .ant-card-body {
     position: relative;
   }
@@ -19,5 +31,14 @@
     height: inherit;
     min-height: 290px;
     width: 100%
+  }
+}
+
+@media (max-width: 700px) {
+  .datagrid {
+    .item {
+      float: none;
+      width: 100%;
+    }
   }
 }

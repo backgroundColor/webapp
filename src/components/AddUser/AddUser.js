@@ -35,12 +35,13 @@ class AddUser extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // console.log('Received values of form: ', values)
-        let userMess = {
-          'name': values.name,
-          'pass': values.pass,
-          'level': values.level,
-          'token': ''
-        }
+        // let userMess = {
+        //   'name': values.name,
+        //   'pass': values.pass,
+        //   'level': values.level,
+        //   'token': ''
+        // }
+        let userMess = `name=${values.name}&pass=${values.pass}&level=${values.level}&token=''`
         this.addUser(userMess)
       }
     })

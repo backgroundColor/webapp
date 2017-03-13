@@ -27,60 +27,101 @@ export default class DataCard extends React.Component {
     })
   }
   render () {
-    const { show } = this.state
+    // const { show } = this.state
     return (
       <div className={styles['datagrid']}>
-        <Row>
-          <Col>
-            <Card title={this.props.title}
-              extra={<a href='javascript:;' onClick={this.showGrid}>
-                <i className='fa fa-area-chart' aria-hidden='true' /></a>}>
-              <div className={styles['gridbody']} ref='gridbody'
-                style={{ display: show === 'message' ? 'block' : 'none' }}>
-                {
-                  this.props.data && this.props.data.map((item, index) => {
-                    return <p className={styles['item-data']} key={`data${index}`}>
-                      {item.name}:&nbsp;&nbsp;{item.value || '0'}
-                      {
-                        (() => {
-                          if (item.name.indexOf('温度') > 0) {
-                            return '°C'
-                          }
-                          if (item.name.indexOf('压力') > 0) {
-                            return 'Pa'
-                          }
-                          if (item.name.indexOf('流量') > 0) {
-                            return 'cc'
-                          }
-                          if (item.name.indexOf('电流') > 0) {
-                            return 'A'
-                          }
-                          if (item.name.indexOf('电压') > 0) {
-                            return 'V'
-                          }
-                          if (item.name.indexOf('功率') > 0) {
-                            return 'W'
-                          }
-                          if (item.name.indexOf('容量') > 0) {
-                            return 'cc'
-                          }
-                        })()
+        <div className={styles['item']}>
+          <div className={styles['wraps']}>
+            {
+              this.props.data && this.props.data.map((item, index) => {
+                return <p className={styles['item-data']} key={`data${index}`}>
+                  {item.name}:&nbsp;&nbsp;{item.value || '0'}
+                  {
+                    (() => {
+                      if (item.name.indexOf('温度') > 0) {
+                        return '°C'
                       }
-                    </p>
-                  })
-                }
-              </div>
-              <div className={styles['gridbody']}
-                style={{ display: show === 'grid' ? 'block' : 'none', height: `${this.state.cardH}px` }}>
-                <Graph data={this.props.data} type='bar' />
-                {
-                  // <DataGrid data={this.props.data} />
-                }
-              </div>
-            </Card>
-          </Col>
-        </Row>
+                      if (item.name.indexOf('压力') > 0) {
+                        return 'Pa'
+                      }
+                      if (item.name.indexOf('流量') > 0) {
+                        return 'cc'
+                      }
+                      if (item.name.indexOf('电流') > 0) {
+                        return 'A'
+                      }
+                      if (item.name.indexOf('电压') > 0) {
+                        return 'V'
+                      }
+                      if (item.name.indexOf('功率') > 0) {
+                        return 'W'
+                      }
+                      if (item.name.indexOf('容量') > 0) {
+                        return 'cc'
+                      }
+                    })()
+                  }
+                </p>
+              })
+            }
+          </div>
+        </div>
+        <div className={styles['item']}>
+          <div className={styles['wraps']}>
+            <Graph data={this.props.data} type='bar' />
+          </div>
+        </div>
       </div>
     )
   }
+  // <Row>
+  //   <Col>
+  //     <Card title={this.props.title}
+  //       extra={<a href='javascript:;' onClick={this.showGrid}>
+  //       <i className='fa fa-area-chart' aria-hidden='true' /></a>}>
+  //         <div className={styles['gridbody']} ref='gridbody'
+  //           style={{ display: show === 'message' ? 'block' : 'none' }}>
+  //           {
+  //             this.props.data && this.props.data.map((item, index) => {
+  //               return <p className={styles['item-data']} key={`data${index}`}>
+  //                 {item.name}:&nbsp;&nbsp;{item.value || '0'}
+  //                 {
+  //                   (() => {
+  //                     if (item.name.indexOf('温度') > 0) {
+  //                       return '°C'
+  //                     }
+  //                     if (item.name.indexOf('压力') > 0) {
+  //                       return 'Pa'
+  //                     }
+  //                     if (item.name.indexOf('流量') > 0) {
+  //                       return 'cc'
+  //                     }
+  //                     if (item.name.indexOf('电流') > 0) {
+  //                       return 'A'
+  //                     }
+  //                     if (item.name.indexOf('电压') > 0) {
+  //                       return 'V'
+  //                     }
+  //                     if (item.name.indexOf('功率') > 0) {
+  //                       return 'W'
+  //                     }
+  //                     if (item.name.indexOf('容量') > 0) {
+  //                       return 'cc'
+  //                     }
+  //                   })()
+  //                 }
+  //               </p>
+  //             })
+  //           }
+  //         </div>
+  //         <div className={styles['gridbody']}
+  //           style={{ display: show === 'grid' ? 'block' : 'none', height: `${this.state.cardH}px` }}>
+  //           <Graph data={this.props.data} type='bar' />
+  //           {
+  //             // <DataGrid data={this.props.data} />
+  //           }
+  //         </div>
+  //       </Card>
+  //     </Col>
+  //   </Row>
 }
