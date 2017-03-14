@@ -98,6 +98,7 @@ class LeftPanel extends React.Component {
             <SubMenu key='sub2' title={<span><Icon type='calendar' /><span>数据中心</span></span>}>
               <Menu.Item key='5'><Link to='runtime' activeClassName='active'>实时数据</Link></Menu.Item>
               <Menu.Item key='6'><Link to='history' activeClassName='active'>历史数据</Link></Menu.Item>
+              <Menu.Item key='7'><Link to='graph' activeClassName='active'>趋势曲线</Link></Menu.Item>
             </SubMenu>
             <SubMenu key='sub4' title={<span><Icon type='pushpin-o' /><span>报警记录</span></span>}>
               <Menu.Item key='9'><Link to='/warning' activeClassName='active'>记录</Link></Menu.Item>

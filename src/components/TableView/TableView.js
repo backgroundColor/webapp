@@ -1,6 +1,5 @@
 import React from 'react'
 import { Table } from 'antd'
-import R from 'ramda'
 type Props = {
   columns: array,
   data: array,
@@ -28,11 +27,13 @@ export default class TableView extends React.Component {
       defaultCurrent: 1,
       total: this.props.total
     }
-    const isFilter = n => n !== null || n
+    // const isFilter = n => n !== null || n
     return (
       <div>
         <Table bordered pagination={this.props.pagination !== false && pageOptions}
-          columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
+          columns={this.props.columns} dataSource={this.props.data}
+          scroll={{ x: 1010, y: 240 }}
+          onChange={this.onChange} />
       </div>
     )
   }

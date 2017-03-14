@@ -18,7 +18,8 @@ export default class LineGraph extends React.Component {
     const data = {
       columns: R.keys(this.props.data).map((item) => {
         return [item].concat(this.props.data[item])
-      }) || []
+      }) || [],
+      type: 'spline'
     }
     const axis = {
       x: {

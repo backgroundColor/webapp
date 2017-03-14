@@ -1,6 +1,6 @@
 .proselect {
   padding: 5px 10px;
-  height: 50px;
+  /*height: 50px;*/
 }
 
 @media (max-width: 700px) {
@@ -8,10 +8,10 @@
     height: auto;
   }
   :global {
-    .ant-col-5 {
+    .ant-col-8 {
       width: auto;
     }
-    .ant-col-6 {
+    .ant-col-8 {
       width: auto;
     }
   }

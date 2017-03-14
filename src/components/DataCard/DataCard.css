@@ -38,6 +38,11 @@
   .datagrid {
     .item {
       float: none;
+    }
+    .item:first-child {
+      width: 100%;
+    }
+    .item:last-child {
       width: 100%;
     }
   }
