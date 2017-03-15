@@ -222,7 +222,7 @@ class ProSelectTime extends React.Component {
       city = '', project = '', disabled = true, projectId = '' } = this.state
     const cityOptions = cities.map(item => <Option key={item}>{item}</Option>)
     const projectOptions = projects.map(item => <Option key={item.name}>{item.name}</Option>)
-    const dateFormat = 'YYYY/MM/DD HH:mm:ss'
+    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
     return (
       <div className={styles['proselect']}>
         <Row type='flex' justify='start'
