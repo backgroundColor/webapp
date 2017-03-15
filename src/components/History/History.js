@@ -40,6 +40,7 @@ export default class History extends React.Component {
     ? 'block' : 'none'
   }
   getData (val, page) {
+    // console.info(val)
     // FIX ME 后台需要加时间过滤, 加时间过滤后开启以下代码
     // fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10&start=${val.start}&end=${val.end}`)
     this.setState({ loading: true })

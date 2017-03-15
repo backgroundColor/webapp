@@ -29,7 +29,15 @@ class ProSelectTime extends React.Component {
       disabled: true,
       projectId: '',
       loading: false,
-      timeRange: []
+      timeRange: [],
+      timeType: 'minute',
+      timeInterval: '',
+      timeIntervalRange: [],
+      timeDisable: {
+        minute: false,
+        hour: false,
+        day: false
+      }
     }
     this.handleProvince = this.handleProvince.bind(this)
     this.handleCities = this.handleCities.bind(this)
@@ -37,6 +45,7 @@ class ProSelectTime extends React.Component {
     this.handleGetData = this.handleGetData.bind(this)
     this.timeRangeChange = this.timeRangeChange.bind(this)
     this.timeTypeChange = this.timeTypeChange.bind(this)
+    this.timeSelect = this.timeSelect.bind(this)
   }
 
   componentDidMount () {
@@ -111,9 +120,28 @@ class ProSelectTime extends React.Component {
   }
 
   timeRangeChange (date, dateString) {
+    const diffDay = moment(dateString[1]).diff(moment(dateString[0]), 'days')
+    const diffHour = moment(dateString[1]).diff(moment(dateString[0]), 'hours')
+    const diffMinute = moment(dateString[1]).diff(moment(dateString[0]), 'minutes')
+    console.info(diffDay, diffHour, diffMinute)
     this.setState({
       timeRange: dateString,
-      disabled: false
+      disabled: false,
+      timeInterval: 5,
+      timeIntervalRange: (() => {
+        let arr = []
+        let len = diffMinute / 60 > 1 ? 60 : 1
+        for (let i = 1; i < len; i++) {
+          arr.push(i * 5)
+        }
+        return arr
+      })(),
+      timeDisable: {
+        minute: false,
+        hour: diffHour < 1,
+        day: diffDay < 1
+      },
+      timeType: 'minute'
     })
   }
 
@@ -121,30 +149,69 @@ class ProSelectTime extends React.Component {
     this.props.getProId && this.props.getProId({
       id: this.state.projectId,
       start: this.state.timeRange[0],
-      end: this.state.timeRange[1]
+      end: this.state.timeRange[1],
+      internal: `${this.state.timeInterval}${this.state.timeType}`
+    })
+  }
+
+  timeSelect (value) {
+    this.setState({
+      timeInterval: value
     })
   }
 
   timeTypeChange (value) {
+    const { timeRange } = this.state
+    const diffDay = moment(timeRange[1]).diff(moment(timeRange[0]), 'days')
+    const diffHour = moment(timeRange[1]).diff(moment(timeRange[0]), 'hours')
+    const diffMinute = moment(timeRange[1]).diff(moment(timeRange[0]), 'minutes')
+    console.info(diffDay, diffHour, diffMinute)
     switch (value) {
       case 'hour':
         this.setState({
-          timeRange: [5, 10, 15]
+          timeIntervalRange: (() => {
+            let arr = []
+            let len = diffHour / 24 > 1 ? 24 : diffHour
+            for (let i = 1; i < len; i++) {
+              arr.push(parseInt(i))
+            }
+            return arr
+          })(),
+          timeInterval: 1,
+          timeType: value
         })
         break
       case 'minute':
         this.setState({
-          timeRange: [5, 10, 15]
+          timeIntervalRange:  (() => {
+            let arr = []
+            let len = diffMinute / 60 > 1 ? 13 : 1
+            for (let i = 1; i < len; i++) {
+              arr.push(parseInt(i * 5))
+            }
+            return arr
+          })(),
+          timeInterval: 5,
+          timeType: value
         })
         break
       case 'day':
         this.setState({
-          timeRange: [5, 10, 15]
+          timeIntervalRange:  (() => {
+            let arr = []
+            // let len = diffDay / 24 > 1 ? 24 : diffHour
+            for (let i = 1; i < diffDay; i++) {
+              arr.push(parseInt(i))
+            }
+            return arr
+          })(),
+          timeInterval: 1,
+          timeType: value
         })
         break
       default:
         this.setState({
-          timeRange: []
+          timeIntervalRange: []
         })
         return
     }
@@ -214,20 +281,24 @@ class ProSelectTime extends React.Component {
           <Col span={8}>
             <span >时间间隔:&nbsp;&nbsp;</span>
             <span>
-              <Select defaultValue='5'
-                style={{ width: '100' }}>
+              <Select value={this.state.timeInterval}
+                onChange={this.timeSelect}
+                notFoundContent='时间范围固定'
+                disabled={disabled}
+                style={{ width: 100 }}>
                 {
-                  this.state.timeRange.map((t, index) => {
-                    return <Option value={t} key={`t${index}`}>{t}</Option>
+                  this.state.timeIntervalRange.map((t, index) => {
+                    return <Option value={`${t}`} key={`t${index}`}>{t}</Option>
                   })
                 }
               </Select>
-              <Select defaultValue='minute'
+              <Select value={this.state.timeType}
                 onChange={this.timeTypeChange}
-                style={{ width: '120' }}>
-                <Option value='minute'>分钟</Option>
-                <Option value='hour'>小时</Option>
-                <Option value='day'>天</Option>
+                disabled={disabled}
+                style={{ width: 120 }}>
+                <Option value='minute' disabled={this.state.timeDisable['minute']}>分钟</Option>
+                <Option value='hour' disabled={this.state.timeDisable['hour']}>小时</Option>
+                <Option value='day' disabled={this.state.timeDisable['day']}>天</Option>
               </Select>
             </span>
           </Col>
