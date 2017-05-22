@@ -41,7 +41,7 @@ class AddUser extends React.Component {
         //   'level': values.level,
         //   'token': ''
         // }
-        let userMess = `name=${values.name}&pass=${values.pass}&level=${values.level}&token=''`
+        let userMess = `name=${values.name}&pass=${values.pass}&level=${values.level}&token=`
         this.addUser(userMess)
       }
     })

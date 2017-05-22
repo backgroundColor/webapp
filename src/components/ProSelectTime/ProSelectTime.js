@@ -146,11 +146,18 @@ class ProSelectTime extends React.Component {
   }
 
   handleGetData () {
+    // console.info({
+    //   id: this.state.projectId,
+    //   start: this.state.timeRange[0],
+    //   end: this.state.timeRange[1],
+    //   internal: `${this.state.timeInterval}${this.state.timeType}`
+    // })
     this.props.getProId && this.props.getProId({
       id: this.state.projectId,
       start: this.state.timeRange[0],
       end: this.state.timeRange[1],
-      internal: `${this.state.timeInterval}${this.state.timeType}`
+      interval: this.state.timeInterval,
+      timeType: this.state.timeType
     })
   }
 
@@ -222,7 +229,7 @@ class ProSelectTime extends React.Component {
       city = '', project = '', disabled = true, projectId = '' } = this.state
     const cityOptions = cities.map(item => <Option key={item}>{item}</Option>)
     const projectOptions = projects.map(item => <Option key={item.name}>{item.name}</Option>)
-    const dateFormat = 'YYYY-MM-DD HH:mm:ss'
+    const dateFormat = 'YYYY-MM-DD'
     return (
       <div className={styles['proselect']}>
         <Row type='flex' justify='start'
@@ -272,7 +279,6 @@ class ProSelectTime extends React.Component {
             <span>
               <RangePicker
                 format={dateFormat}
-                showTime
                 style={{ width: 220 }}
                 onChange={this.timeRangeChange}
                 />

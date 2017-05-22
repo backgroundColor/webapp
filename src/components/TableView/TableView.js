@@ -15,24 +15,27 @@ export default class TableView extends React.Component {
     this.onChange = this.onChange.bind(this)
   }
   componentDidUpdate () {
-    console.info(this.props.pagination)
+    // console.info(this.props.pagination)
   }
   onChange (pagination, filters, sorter) {
-    // console.info(pagination)
+    console.info(pagination)
     // console.log('params', pagination, filters, sorter)
-    this.props.onChange && this.onChange(pagination.current, this.props.id)
+    this.props.onChange && this.props.onChange(this.props.id, pagination.current)
   }
+
   render () {
     const pageOptions = {
-      defaultCurrent: 1,
+      // defaultCurrent: 1,
+      pageSize: 10,
       total: this.props.total
     }
     // const isFilter = n => n !== null || n
     return (
       <div>
-        <Table bordered pagination={this.props.pagination !== false && pageOptions}
+        <Table bordered
           columns={this.props.columns} dataSource={this.props.data}
-          scroll={{ x: 1010, y: 240 }}
+          pagination={this.props.pagination !== false && pageOptions}
+          scroll={{ x: 1010, y: 300 }}
           onChange={this.onChange} />
       </div>
     )

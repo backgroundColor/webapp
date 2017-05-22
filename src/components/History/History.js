@@ -44,16 +44,65 @@ export default class History extends React.Component {
     // FIX ME 后台需要加时间过滤, 加时间过滤后开启以下代码
     // fetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10&start=${val.start}&end=${val.end}`)
     this.setState({ loading: true })
-    universalFetch(`${__TASK_URL__}history?id=${val.id}&page=${page}&size=10`)
+    const interval = (() => {
+      if (!val) return
+      switch (val.type) {
+        case 'minute':
+          return parseInt(val.interval / 5)
+        case 'hour':
+          return parseInt(val.interval * 60 / 5)
+        case 'day':
+          return parseInt(val.interval * 24 * 60 / 5)
+        default:
+          return 1
+      }
+    })()
+    universalFetch(`${__TASK_URL__}history?id=${val.id}&page=${page}
+      &size=10&start=${val.start}&end=${val.end}&interval=${interval}`)
     .then((res) => res.status === 200 && res.json())
     .then((json) => {
       const isFilter = n => n !== null
-      // console.info('high', R.filter(isFilter, json.body.items.map((d) => d.high)))
+      console.info('high', R.filter(isFilter, json.body.items.map((d) => {
+        if (d.high.benElcDatas && d.high.benElcDatas.length !== 0) {
+          d.high.benElcDatas.map((ben, index) => {
+            d.high[`benName${index + 1}`] = ben.name
+            d.high[`benEle${index + 1}`] = ben.ben_ele
+          })
+        }
+        return d.high
+      })))
       this.setState({
         data: {
-          high: R.filter(isFilter, json.body.items.map((d) => d.high)) || [],
-          media: R.filter(isFilter, json.body.items.map((d) => d.median)) || [],
-          low: R.filter(isFilter, json.body.items.map((d) => d.low)) || [],
+          high: R.filter(isFilter, json.body.items.map((d) => {
+            if (d.high.benElcDatas && d.high.benElcDatas.length !== 0) {
+              d.high.benElcDatas.map((ben, index) => {
+                d.high[`benName${index + 1}`] = ben.name
+                d.high[`benEle${index + 1}`] = ben.ben_ele
+                d.high['createTime'] = ben.createTime
+              })
+            }
+            return d.high
+          })) || [],
+          media:R.filter(isFilter, json.body.items.map((d) => {
+            if (d.median.benElcDatas && d.median.benElcDatas.length !== 0) {
+              d.median.benElcDatas.map((ben, index) => {
+                d.median[`benName${index + 1}`] = ben.name
+                d.median[`benEle${index + 1}`] = ben.ben_ele
+                d.median['createTime'] = ben.createTime
+              })
+            }
+            return d.high
+          })) || [],
+          low: R.filter(isFilter, json.body.items.map((d) => {
+            if (d.low.benElcDatas && d.low.benElcDatas.length !== 0) {
+              d.low.benElcDatas.map((ben, index) => {
+                d.low[`benName${index + 1}`] = ben.name
+                d.low[`benEle${index + 1}`] = ben.ben_ele
+                d.low['createTime'] = ben.createTime
+              })
+            }
+            return d.high
+          })) || [],
           transBox: R.filter(isFilter, json.body.items.map((d) => d.t_f)) || [],
           oneUnit: R.filter(isFilter, json.body.items.map((d) => d.oneUnit)) || [],
           outerUnit: R.filter(isFilter, json.body.items.map((d) => d.outerUnit)) || [],
@@ -76,105 +125,153 @@ export default class History extends React.Component {
     const columns = {
       high: [
         { title: '时间', dataIndex: 'createTime', key: 1, width: 120 },
-        { title: '供水温度', dataIndex: 'supply_water_temp', key: 2, render: (text) => <span>{text}°C</span> },
-        { title: '回水温度', dataIndex: 'back_water_temp', key: 3, render: (text) => <span>{text}°C</span> },
-        { title: '室内温度', dataIndex: 'house_temp', key: 4, render: (text) => <span>{text}°C</span> },
-        { title: '供水压力', dataIndex: 'supply_water_press', key: 5, render: (text) => <span>{text}Pa</span> },
-        { title: '回水压力', dataIndex: 'back_water_press', key: 6, render: (text) => <span>{text}Pa</span> },
-        { title: '高区流量', dataIndex: 'water_flow', key: 7, render: (text) => <span>{text}cc</span> },
-        // { title: '泵电流数据', key: 80, children: [
-        //   {
-        //     title: '名称',
-        //     dataIndex: 'benElcDatas.name',
-        //     key: 'benEleName'
-        //   },
-        //   {
-        //     title: '泵电流',
-        //     dataIndex: 'benElcDatas.ben_ele',
-        //     key: 'benEle'
-        //   }
-        // ] }
+        { title: '供水温度', dataIndex: 'supply_water_temp', width: 80, key: 2, render: (text) => <span>{text}°C</span> },
+        { title: '回水温度', dataIndex: 'back_water_temp', width: 80, key: 3, render: (text) => <span>{text}°C</span> },
+        { title: '室内温度', dataIndex: 'house_temp', width: 80, key: 4, render: (text) => <span>{text}°C</span> },
+        { title: '供水压力', dataIndex: 'supply_water_press', width: 80, key: 5, render: (text) => <span>{text}Pa</span> },
+        { title: '回水压力', dataIndex: 'back_water_press', width: 80, key: 6, render: (text) => <span>{text}Pa</span> },
+        { title: '高区流量', dataIndex: 'water_flow', width: 80, key: 7, render: (text) => <span>{text}cc</span> },
+        { title: '泵电流数据', key: 80, width: 200, children: [
+          {
+            title: '泵１',
+            key: 'ben１',
+            width: 100,
+            children: [
+              { title: '泵名称', key: 'benname1', dataIndex: 'benName1', width: 100 },
+              { title: '泵电流', key: 'benele1', dataIndex: 'benEle1', width: 100, render: (text) => <span>{text}A</span> }
+            ]
+          },
+          {
+            title: '泵２',
+            key: 'ben2',
+            width: 200,
+            children: [
+              { title: '泵名称', key: 'benname2', dataIndex: 'benName2', width: 100 },
+              { title: '泵电流', key: 'benele2', dataIndex: 'benEle2', width: 100, render: (text) => <span>{text}A</span> }
+            ]
+          }
+        ] }
       ],
       media: [
         { title: '时间', dataIndex: 'createTime', key: 8, width: 120 },
-        { title: '供水温度', dataIndex: 'supply_water_temp', key: 9, render: (text) => <span>{text}°C</span> },
-        { title: '回水温度', dataIndex: 'back_water_temp', key: 10, render: (text) => <span>{text}°C</span> },
-        { title: '室内温度', dataIndex: 'house_temp', key: 11, render: (text) => <span>{text}°C</span> },
-        { title: '供水压力', dataIndex: 'supply_water_press', key: 12, render: (text) => <span>{text}Pa</span> },
-        { title: '回水压力', dataIndex: 'back_water_press', key: 13, render: (text) => <span>{text}Pa</span> },
-        { title: '中区区流量', dataIndex: 'water_flow', key: 14, render: (text) => <span>{text}cc</span> }
+        { title: '供水温度', dataIndex: 'supply_water_temp', width: 80, key: 9, render: (text) => <span>{text}°C</span> },
+        { title: '回水温度', dataIndex: 'back_water_temp', width: 80, key: 10, render: (text) => <span>{text}°C</span> },
+        { title: '室内温度', dataIndex: 'house_temp', width: 80, key: 11, render: (text) => <span>{text}°C</span> },
+        { title: '供水压力', dataIndex: 'supply_water_press', width: 80, key: 12, render: (text) => <span>{text}Pa</span> },
+        { title: '回水压力', dataIndex: 'back_water_press', width: 80, key: 13, render: (text) => <span>{text}Pa</span> },
+        { title: '中区区流量', dataIndex: 'water_flow', width: 80, key: 14, render: (text) => <span>{text}cc</span> },
+        { title: '泵电流数据', key: 80, width: 200, children: [
+          {
+            title: '泵１',
+            key: 'ben１',
+            width: 100,
+            children: [
+              { title: '泵名称', key: 'benname1', dataIndex: 'benName1', width: 100 },
+              { title: '泵电流', key: 'benele1', dataIndex: 'benEle1', width: 100, render: (text) => <span>{text}A</span> }
+            ]
+          },
+          {
+            title: '泵２',
+            key: 'ben2',
+            width: 200,
+            children: [
+              { title: '泵名称', key: 'benname2', dataIndex: 'benName2', width: 100 },
+              { title: '泵电流', key: 'benele2', dataIndex: 'benEle2', width: 100, render: (text) => <span>{text}A</span> }
+            ]
+          }
+        ] }
       ],
       low: [
         { title: '时间', dataIndex: 'createTime', key: 15, width: 120 },
-        { title: '供水温度', dataIndex: 'supply_water_temp', key: 16, render: (text) => <span>{text}°C</span> },
-        { title: '回水温度', dataIndex: 'back_water_temp', key: 17, render: (text) => <span>{text}°C</span> },
-        { title: '室内温度', dataIndex: 'house_temp', key: 18, render: (text) => <span>{text}°C</span> },
-        { title: '供水压力', dataIndex: 'supply_water_press', key: 19, render: (text) => <span>{text}Pa</span> },
-        { title: '回水压力', dataIndex: 'back_water_press', key: 20, render: (text) => <span>{text}Pa</span> },
-        { title: '低区流量', dataIndex: 'water_flow', key: 21, render: (text) => <span>{text}cc</span> }
+        { title: '供水温度', dataIndex: 'supply_water_temp', width: 80, key: 16, render: (text) => <span>{text}°C</span> },
+        { title: '回水温度', dataIndex: 'back_water_temp', width: 80, key: 17, render: (text) => <span>{text}°C</span> },
+        { title: '室内温度', dataIndex: 'house_temp', width: 80, key: 18, render: (text) => <span>{text}°C</span> },
+        { title: '供水压力', dataIndex: 'supply_water_press', width: 80, key: 19, render: (text) => <span>{text}Pa</span> },
+        { title: '回水压力', dataIndex: 'back_water_press', width: 80, key: 20, render: (text) => <span>{text}Pa</span> },
+        { title: '低区流量', dataIndex: 'water_flow', width: 80, key: 21, render: (text) => <span>{text}cc</span> },
+        { title: '泵电流数据', key: 80, width: 200, children: [
+          {
+            title: '泵１',
+            key: 'ben１',
+            width: 100,
+            children: [
+              { title: '泵名称', key: 'benname1', dataIndex: 'benName1', width: 100 },
+              { title: '泵电流', key: 'benele1', dataIndex: 'benEle1', width: 100, render: (text) => <span>{text}A</span> }
+            ]
+          },
+          {
+            title: '泵２',
+            key: 'ben2',
+            width: 200,
+            children: [
+              { title: '泵名称', key: 'benname2', dataIndex: 'benName2', width: 100 },
+              { title: '泵电流', key: 'benele2', dataIndex: 'benEle2', width: 100, render: (text) => <span>{text}A</span> }
+            ]
+          }
+        ] }
       ],
       transBox: [
         { title: '时间', dataIndex: 'createTime', key: 22, width: 120 },
-        { title: 'A相温度', dataIndex: 'a_tem', key: 23, render: (text) => <span>{text}°C</span> },
-        { title: 'B相温度', dataIndex: 'b_tem', key: 24, render: (text) => <span>{text}°C</span> },
-        { title: 'C相温度', dataIndex: 'c_tem', key: 25, render: (text) => <span>{text}°C</span> },
-        { title: 'A相电流', dataIndex: 'a_ele', key: 26, render: (text) => <span>{text}A</span> },
-        { title: 'B相电流', dataIndex: 'b_ele', key: 27, render: (text) => <span>{text}A</span> },
-        { title: 'C相电流', dataIndex: 'c_ele', key: 28, render: (text) => <span>{text}A</span> },
-        { title: 'A相电压', dataIndex: 'a_pre', key: 29, render: (text) => <span>{text}V</span> },
-        { title: 'B相电压', dataIndex: 'b_pre', key: 30, render: (text) => <span>{text}V</span> },
-        { title: 'C相电压', dataIndex: 'c_pre', key: 31, render: (text) => <span>{text}V</span> },
-        { title: '有功功率', dataIndex: 'has_power', key: 32, render: (text) => <span>{text}W</span> },
-        { title: '无功功率', dataIndex: 'no_power', key: 33, render: (text) => <span>{text}W</span> },
-        { title: '频率', dataIndex: 'rate', key: 34, render: (text) => <span>{text}Hz</span> }
+        { title: 'A相温度', dataIndex: 'a_tem', key: 23, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: 'B相温度', dataIndex: 'b_tem', key: 24, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: 'C相温度', dataIndex: 'c_tem', key: 25, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: 'A相电流', dataIndex: 'a_ele', key: 26, width: 80, render: (text) => <span>{text}A</span> },
+        { title: 'B相电流', dataIndex: 'b_ele', key: 27, width: 80, render: (text) => <span>{text}A</span> },
+        { title: 'C相电流', dataIndex: 'c_ele', key: 28, width: 80, render: (text) => <span>{text}A</span> },
+        { title: 'A相电压', dataIndex: 'a_pre', key: 29, width: 80, render: (text) => <span>{text}V</span> },
+        { title: 'B相电压', dataIndex: 'b_pre', key: 30, width: 80, render: (text) => <span>{text}V</span> },
+        { title: 'C相电压', dataIndex: 'c_pre', key: 31, width: 80, render: (text) => <span>{text}V</span> },
+        { title: '有功功率', dataIndex: 'has_power', key: 32, width: 80, render: (text) => <span>{text}W</span> },
+        { title: '无功功率', dataIndex: 'no_power', key: 33, width: 80, render: (text) => <span>{text}W</span> },
+        { title: '频率', dataIndex: 'rate', key: 34, width: 80, render: (text) => <span>{text}Hz</span> }
       ],
       unit: [
         { title: '时间', dataIndex: 'createTime', key: 35, width: 120 },
-        { title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key: 36, render: (text) => <span>{text}°C</span> },
-        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 37, render: (text) => <span>{text}°C</span> },
-        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 38, render: (text) => <span>{text}°C</span> },
-        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 39, render: (text) => <span>{text}°C</span> },
-        { title: '水箱温度', dataIndex: 'waterBoxTemp', key: 40, render: (text) => <span>{text}°C</span> },
-        { title: '排气温度', dataIndex: 'gasOutTemp', key: 41, render: (text) => <span>{text}°C</span> },
-        { title: '吸气温度', dataIndex: 'gasInTemp', key: 42, render: (text) => <span>{text}°C</span> },
-        { title: '冷凝温度', dataIndex: 'condensingTemp', key: 43, render: (text) => <span>{text}°C</span> },
-        { title: '蒸发温度', dataIndex: 'evapTemp', key: 44, render: (text) => <span>{text}°C</span> },
-        { title: '运行电流', dataIndex: 'ele_flow', key: 45, render: (text) => <span>{text}A</span> },
-        { title: '运行容量', dataIndex: 'ele_total', key: 46, render: (text) => <span>{text}F</span> }
+        { title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key: 36, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 37, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 38, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 39, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '水箱温度', dataIndex: 'waterBoxTemp', key: 40, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '排气温度', dataIndex: 'gasOutTemp', key: 41, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '吸气温度', dataIndex: 'gasInTemp', key: 42, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '冷凝温度', dataIndex: 'condensingTemp', key: 43, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '蒸发温度', dataIndex: 'evapTemp', key: 44, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '运行电流', dataIndex: 'ele_flow', key: 45, width: 80, render: (text) => <span>{text}A</span> },
+        { title: '运行容量', dataIndex: 'ele_total', key: 46, width: 80, render: (text) => <span>{text}F</span> }
       ],
       twoUnit: [
         { title: '时间', dataIndex: 'createTime', key: 47, width: 120 },
-        { title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key:48, render: (text) => <span>{text}°C</span> },
-        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 49, render: (text) => <span>{text}°C</span> },
-        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 50, render: (text) => <span>{text}°C</span> },
-        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 51, render: (text) => <span>{text}°C</span> },
-        { title: '第一排气温度', dataIndex: 'firstGasOutTemp', key: 52, render: (text) => <span>{text}°C</span> },
-        { title: '第一吸气温度', dataIndex: 'firstGasInTemp', key: 53, render: (text) => <span>{text}°C</span> },
-        { title: '第一冷凝温度', dataIndex: 'firstCondensingTemp', key: 54, render: (text) => <span>{text}°C</span> },
-        { title: '第一蒸发温度', dataIndex: 'firstEvapTemp', key: 55, render: (text) => <span>{text}°C</span> },
-        { title: '第一运行电流', dataIndex: 'firstEleFlow', key: 56, render: (text) => <span>{text}A</span> },
-        { title: '第一运行容量', dataIndex: 'firstEleTotal', key: 57, render: (text) => <span>{text}F</span> },
-        { title: '第二排气温度', dataIndex: 'secondGasOutTemp', key: 58, render: (text) => <span>{text}°C</span> },
-        { title: '第二吸气温度', dataIndex: 'secondGasInTemp', key: 59, render: (text) => <span>{text}°C</span> },
-        { title: '第二冷凝温度', dataIndex: 'secondCondensingTemp', key: 60, render: (text) => <span>{text}°C</span> },
-        { title: '第二蒸发温度', dataIndex: 'secondEvapTemp', key: 61, render: (text) => <span>{text}°C</span> },
-        { title: '第二运行电流', dataIndex: 'secondEleFlow', key: 62, render: (text) => <span>{text}A</span> },
-        { title: '第二运行容量', dataIndex: 'secondEleTotal', key: 63, render: (text) => <span>{text}F</span> },
-        { title: '水箱温度', dataIndex: 'waterBoxTemp', key: 64, render: (text) => <span>{text}°C</span> }
+        { title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key:48, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 49, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 50, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 51, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第一排气温度', dataIndex: 'firstGasOutTemp', key: 52, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第一吸气温度', dataIndex: 'firstGasInTemp', key: 53, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第一冷凝温度', dataIndex: 'firstCondensingTemp', key: 54, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第一蒸发温度', dataIndex: 'firstEvapTemp', key: 55, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第一运行电流', dataIndex: 'firstEleFlow', key: 56, width: 80, render: (text) => <span>{text}A</span> },
+        { title: '第一运行容量', dataIndex: 'firstEleTotal', key: 57, width: 80, render: (text) => <span>{text}F</span> },
+        { title: '第二排气温度', dataIndex: 'secondGasOutTemp', key: 58, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第二吸气温度', dataIndex: 'secondGasInTemp', key: 59, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第二冷凝温度', dataIndex: 'secondCondensingTemp', key: 60, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第二蒸发温度', dataIndex: 'secondEvapTemp', key: 61, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '第二运行电流', dataIndex: 'secondEleFlow', key: 62, width: 80, render: (text) => <span>{text}A</span> },
+        { title: '第二运行容量', dataIndex: 'secondEleTotal', key: 63, width: 80, render: (text) => <span>{text}F</span> },
+        { title: '水箱温度', dataIndex: 'waterBoxTemp', key: 64, width: 80, render: (text) => <span>{text}°C</span> }
       ],
       outerUnit: [
         { title: '时间', dataIndex: 'createTime', key: 65, width: 120 },
-        { title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key:66, render: (text) => <span>{text}°C</span> },
-        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 67, render: (text) => <span>{text}°C</span> },
-        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 68, render: (text) => <span>{text}°C</span> },
-        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 69, render: (text) => <span>{text}°C</span> },
-        { title: '油箱温度', dataIndex: 'oilBoxTemp', key: 70, render: (text) => <span>{text}°C</span> },
-        { title: '冷凝压力', dataIndex: 'condensingPress', key: 71, render: (text) => <span>{text}°C</span> },
-        { title: '蒸发压力', dataIndex: 'evapPress', key: 72, render: (text) => <span>{text}°C</span> },
-        { title: '冷凝压力差', dataIndex: 'condensingPressDiff', key: 73, render: (text) => <span>{text}°C</span> },
-        { title: '电流载荷', dataIndex: 'elecLoad', key: 74, render: (text) => <span>{text}A</span> },
-        { title: '蒸发全温', dataIndex: 'evapFullTemp', key: 75, render: (text) => <span>{text}F</span> },
-        { title: '冷凝全温', dataIndex: 'condensingFullTemp', key: 76, render: (text) => <span>{text}°C</span> }
+        { title: '污水侧进水温度', dataIndex: 'dirtyWaterInTemp', key:66, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧进水温度', dataIndex: 'cleanWaterInTemp', key: 67, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '污水侧出水温度', dataIndex: 'dirtyWaterOutTemp', key: 68, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '清水侧出水温度', dataIndex: 'cleanWaterOutTemp', key: 69, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '油箱温度', dataIndex: 'oilBoxTemp', key: 70, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '冷凝压力', dataIndex: 'condensingPress', key: 71, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '蒸发压力', dataIndex: 'evapPress', key: 72, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '冷凝压力差', dataIndex: 'condensingPressDiff', key: 73, width: 80, render: (text) => <span>{text}°C</span> },
+        { title: '电流载荷', dataIndex: 'elecLoad', key: 74, width: 80, render: (text) => <span>{text}A</span> },
+        { title: '蒸发全温', dataIndex: 'evapFullTemp', key: 75, width: 80, render: (text) => <span>{text}F</span> },
+        { title: '冷凝全温', dataIndex: 'condensingFullTemp', key: 76, width: 80, render: (text) => <span>{text}°C</span> }
       ]
 
     }

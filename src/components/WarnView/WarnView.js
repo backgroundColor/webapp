@@ -5,43 +5,15 @@ import { notification, Spin } from 'antd'
 import { universalFetch } from 'modules/fetch'
 const columns = [{
   title: '标题',
-  dataIndex: 'title'
-  // filters: [{
-  //   text: 'Joe',
-  //   value: 'Joe'
-  // }, {
-  //   text: 'Jim',
-  //   value: 'Jim'
-  // }, {
-  //   text: 'Submenu',
-  //   value: 'Submenu',
-  //   children: [{
-  //     text: 'Green',
-  //     value: 'Green'
-  //   }, {
-  //     text: 'Black',
-  //     value: 'Black'
-  //   }]
-  // }],
-  // onFilter: (value, record) => record.name.indexOf(value) === 0,
-  // sorter: (a, b) => a.name.length - b.name.length
+  dataIndex: 'title',
+  width: 200
 }, {
   title: '内容',
   dataIndex: 'content'
-  // sorter: (a, b) => a.age - b.age
 }, {
   title: '时间',
-  dataIndex: 'createTime'
-  // filters: [{
-  //   text: 'London',
-  //   value: 'London'
-  // }, {
-  //   text: 'New York',
-  //   value: 'New York'
-  // }],
-  // filterMultiple: false,
-  // onFilter: (value, record) => record.address.indexOf(value) === 0,
-  // sorter: (a, b) => a.address.length - b.address.length
+  dataIndex: 'createTime',
+  width: 300
 }]
 
 export default class WarnView extends React.Component {
@@ -92,7 +64,7 @@ export default class WarnView extends React.Component {
           <TableView columns={columns} data={data}
             total={total}
             onChange={this.getData}
-            d={projectId} />
+            id={projectId} />
         </Spin>
       </div>
     )
